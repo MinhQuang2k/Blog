@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"blog.com/common"
+	"blog.com/models"
 )
 
 type UserSerializer struct {
@@ -19,7 +20,7 @@ type UserResponse struct {
 }
 
 func (self *UserSerializer) Response() UserResponse {
-	myUserModel := self.c.MustGet("my_user_model").(UserModel)
+	myUserModel := self.c.MustGet("my_user_model").(models.UserModel)
 	user := UserResponse{
 		Username: myUserModel.Username,
 		Email:    myUserModel.Email,
@@ -32,7 +33,7 @@ func (self *UserSerializer) Response() UserResponse {
 
 type ProfileSerializer struct {
 	C *gin.Context
-	UserModel
+	models.UserModel
 }
 
 type ProfileResponse struct {

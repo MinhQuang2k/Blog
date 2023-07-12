@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"blog.com/common"
+	"blog.com/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,7 @@ func PostCommentDelete(c *gin.Context) {
 		c.JSON(http.StatusNotFound, common.NewError("comment", errors.New("Invalid id")))
 		return
 	}
-	err = DeleteCommentModel([]uint{id})
+	err = models.DeleteComment([]uint{id})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("comment", errors.New("Invalid id")))
 		return
@@ -40,12 +41,12 @@ func PostCommentDelete(c *gin.Context) {
 
 func PostCommentList(c *gin.Context) {
 	slug := c.Param("slug")
-	postModel, err := FindOnePost(&PostModel{Slug: slug})
+	postModel, err := models.FindPost(&models.PostModel{Slug: slug})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("comments", errors.New("Invalid slug")))
 		return
 	}
-	err = postModel.getComments()
+	err = postModel.GetComments()
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("comments", errors.New("Database error")))
 		return
@@ -56,7 +57,7 @@ func PostCommentList(c *gin.Context) {
 
 func PostCommentCreate(c *gin.Context) {
 	slug := c.Param("slug")
-	postModel, err := FindOnePost(&PostModel{Slug: slug})
+	postModel, err := models.FindPost(&models.PostModel{Slug: slug})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("comment", errors.New("Invalid slug")))
 		return
@@ -68,7 +69,7 @@ func PostCommentCreate(c *gin.Context) {
 	}
 	commentModelValidator.commentModel.Post = postModel
 
-	if err := SaveOne(&commentModelValidator.commentModel); err != nil {
+	if err := models.SaveOne(&commentModelValidator.commentModel); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, common.NewError("database", err))
 		return
 	}
@@ -78,7 +79,7 @@ func PostCommentCreate(c *gin.Context) {
 
 func PostRetrieve(c *gin.Context) {
 	slug := c.Param("slug")
-	postModel, err := FindOnePost(&PostModel{Slug: slug})
+	postModel, err := models.FindPost(&models.PostModel{Slug: slug})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("posts", errors.New("Invalid slug")))
 		return
@@ -94,7 +95,7 @@ func PostCreate(c *gin.Context) {
 		return
 	}
 
-	if err := SaveOne(&postModelValidator.postModel); err != nil {
+	if err := models.SaveOne(&postModelValidator.postModel); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, common.NewError("database", err))
 		return
 	}
@@ -104,7 +105,7 @@ func PostCreate(c *gin.Context) {
 
 func PostUpdate(c *gin.Context) {
 	slug := c.Param("slug")
-	postModel, err := FindOnePost(&PostModel{Slug: slug})
+	postModel, err := models.FindPost(&models.PostModel{Slug: slug})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("posts", errors.New("Invalid slug")))
 		return
@@ -126,7 +127,7 @@ func PostUpdate(c *gin.Context) {
 
 func PostDelete(c *gin.Context) {
 	slug := c.Param("slug")
-	err := DeletePostModel(&PostModel{Slug: slug})
+	err := models.DeletePost(&models.PostModel{Slug: slug})
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("posts", errors.New("Invalid slug")))
 		return
@@ -138,7 +139,7 @@ func PostList(c *gin.Context) {
 	author := c.Query("author")
 	limit := c.Query("limit")
 	offset := c.Query("offset")
-	postModels, modelCount, err := FindManyPost(author, limit, offset)
+	postModels, modelCount, err := models.FindPostPaging(author, limit, offset)
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("posts", errors.New("Invalid param")))
 		return

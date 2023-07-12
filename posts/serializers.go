@@ -1,24 +1,15 @@
 package posts
 
 import (
+	"blog.com/models"
 	"blog.com/users"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
 )
 
-type PostUserSerializer struct {
-	C *gin.Context
-	PostUserModel
-}
-
-func (s *PostUserSerializer) Response() users.ProfileResponse {
-	response := users.ProfileSerializer{s.C, s.PostUserModel.UserModel}
-	return response.Response()
-}
-
 type PostSerializer struct {
 	C *gin.Context
-	PostModel
+	models.PostModel
 }
 
 type PostResponse struct {
@@ -34,11 +25,11 @@ type PostResponse struct {
 
 type PostsSerializer struct {
 	C     *gin.Context
-	Posts []PostModel
+	Posts []models.PostModel
 }
 
 func (s *PostSerializer) Response() PostResponse {
-	authorSerializer := PostUserSerializer{s.C, s.Author}
+	userSerializer := users.ProfileSerializer{s.C, s.User}
 	response := PostResponse{
 		ID:          s.ID,
 		Slug:        slug.Make(s.Title),
@@ -47,7 +38,7 @@ func (s *PostSerializer) Response() PostResponse {
 		Body:        s.Body,
 		CreatedAt:   s.CreatedAt.UTC().Format("2006-01-02T15:04:05.999Z"),
 		UpdatedAt:   s.UpdatedAt.UTC().Format("2006-01-02T15:04:05.999Z"),
-		Author:      authorSerializer.Response(),
+		Author:      userSerializer.Response(),
 	}
 	return response
 }
@@ -63,12 +54,12 @@ func (s *PostsSerializer) Response() []PostResponse {
 
 type CommentSerializer struct {
 	C *gin.Context
-	CommentModel
+	models.CommentModel
 }
 
 type CommentsSerializer struct {
 	C        *gin.Context
-	Comments []CommentModel
+	Comments []models.CommentModel
 }
 
 type CommentResponse struct {
@@ -80,13 +71,13 @@ type CommentResponse struct {
 }
 
 func (s *CommentSerializer) Response() CommentResponse {
-	authorSerializer := PostUserSerializer{s.C, s.Author}
+	userSerializer := users.ProfileSerializer{s.C, s.User}
 	response := CommentResponse{
 		ID:        s.ID,
 		Body:      s.Body,
 		CreatedAt: s.CreatedAt.UTC().Format("2006-01-02T15:04:05.999Z"),
 		UpdatedAt: s.UpdatedAt.UTC().Format("2006-01-02T15:04:05.999Z"),
-		Author:    authorSerializer.Response(),
+		Author:    userSerializer.Response(),
 	}
 	return response
 }

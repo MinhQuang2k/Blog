@@ -2,7 +2,7 @@ package posts
 
 import (
 	"blog.com/common"
-	"blog.com/users"
+	"blog.com/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
 )
@@ -13,14 +13,14 @@ type PostModelValidator struct {
 		Description string `form:"description" json:"description" binding:"max=2048"`
 		Body        string `form:"body" json:"body" binding:"max=2048"`
 	} `json:"post"`
-	postModel PostModel `json:"-"`
+	postModel models.PostModel `json:"-"`
 }
 
 func NewPostModelValidator() PostModelValidator {
 	return PostModelValidator{}
 }
 
-func NewPostModelValidatorFillWith(postModel PostModel) PostModelValidator {
+func NewPostModelValidatorFillWith(postModel models.PostModel) PostModelValidator {
 	postModelValidator := NewPostModelValidator()
 	postModelValidator.Post.Title = postModel.Title
 	postModelValidator.Post.Description = postModel.Description
@@ -29,7 +29,7 @@ func NewPostModelValidatorFillWith(postModel PostModel) PostModelValidator {
 }
 
 func (s *PostModelValidator) Bind(c *gin.Context) error {
-	myUserModel := c.MustGet("my_user_model").(users.UserModel)
+	myUserModel := c.MustGet("my_user_model").(models.UserModel)
 
 	err := common.Bind(c, s)
 	if err != nil {
@@ -39,7 +39,7 @@ func (s *PostModelValidator) Bind(c *gin.Context) error {
 	s.postModel.Title = s.Post.Title
 	s.postModel.Description = s.Post.Description
 	s.postModel.Body = s.Post.Body
-	s.postModel.Author = GetPostUserModel(myUserModel)
+	s.postModel.User = myUserModel
 	return nil
 }
 
@@ -47,7 +47,7 @@ type CommentModelValidator struct {
 	Comment struct {
 		Body string `form:"body" json:"body" binding:"max=2048"`
 	} `json:"comment"`
-	commentModel CommentModel `json:"-"`
+	commentModel models.CommentModel `json:"-"`
 }
 
 func NewCommentModelValidator() CommentModelValidator {
@@ -55,13 +55,13 @@ func NewCommentModelValidator() CommentModelValidator {
 }
 
 func (s *CommentModelValidator) Bind(c *gin.Context) error {
-	myUserModel := c.MustGet("my_user_model").(users.UserModel)
+	myUserModel := c.MustGet("my_user_model").(models.UserModel)
 
 	err := common.Bind(c, s)
 	if err != nil {
 		return err
 	}
 	s.commentModel.Body = s.Comment.Body
-	s.commentModel.Author = GetPostUserModel(myUserModel)
+	s.commentModel.User = myUserModel
 	return nil
 }

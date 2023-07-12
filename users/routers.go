@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"blog.com/common"
+	"blog.com/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,7 +26,7 @@ func UsersRegistration(c *gin.Context) {
 		return
 	}
 
-	if err := SaveOne(&userModelValidator.userModel); err != nil {
+	if err := models.SaveOne(&userModelValidator.userModel); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, common.NewError("database", err))
 		return
 	}
@@ -40,14 +41,14 @@ func UsersLogin(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, common.NewValidatorError(err))
 		return
 	}
-	userModel, err := FindOneUser(&UserModel{Email: loginValidator.userModel.Email})
+	userModel, err := models.FindUser(&models.UserModel{Email: loginValidator.userModel.Email})
 
 	if err != nil {
 		c.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
 		return
 	}
 
-	if userModel.checkPassword(loginValidator.User.Password) != nil {
+	if userModel.CheckPassword(loginValidator.User.Password) != nil {
 		c.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
 		return
 	}
@@ -62,7 +63,7 @@ func UserRetrieve(c *gin.Context) {
 }
 
 func UserUpdate(c *gin.Context) {
-	myUserModel := c.MustGet("my_user_model").(UserModel)
+	myUserModel := c.MustGet("my_user_model").(models.UserModel)
 	userModelValidator := NewUserModelValidatorFillWith(myUserModel)
 	if err := userModelValidator.Bind(c); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, common.NewValidatorError(err))

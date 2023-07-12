@@ -2,6 +2,7 @@ package users
 
 import (
 	"blog.com/common"
+	"blog.com/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +18,7 @@ type UserModelValidator struct {
 		Bio      string `form:"bio" json:"bio" binding:"max=1024"`
 		Image    string `form:"image" json:"image" binding:"omitempty,url"`
 	} `json:"user"`
-	userModel UserModel `json:"-"`
+	userModel models.UserModel `json:"-"`
 }
 
 // There are some difference when you create or update a model, you need to fill the DataModel before
@@ -33,7 +34,7 @@ func (self *UserModelValidator) Bind(c *gin.Context) error {
 	self.userModel.Bio = self.User.Bio
 
 	if self.User.Password != common.NBRandomPassword {
-		self.userModel.setPassword(self.User.Password)
+		self.userModel.SetPassword(self.User.Password)
 	}
 	if self.User.Image != "" {
 		self.userModel.Image = &self.User.Image
@@ -48,7 +49,7 @@ func NewUserModelValidator() UserModelValidator {
 	return userModelValidator
 }
 
-func NewUserModelValidatorFillWith(userModel UserModel) UserModelValidator {
+func NewUserModelValidatorFillWith(userModel models.UserModel) UserModelValidator {
 	userModelValidator := NewUserModelValidator()
 	userModelValidator.User.Username = userModel.Username
 	userModelValidator.User.Email = userModel.Email
@@ -66,7 +67,7 @@ type LoginValidator struct {
 		Email    string `form:"email" json:"email" binding:"email"`
 		Password string `form:"password"json:"password" binding:"min=8,max=255"`
 	} `json:"user"`
-	userModel UserModel `json:"-"`
+	userModel models.UserModel `json:"-"`
 }
 
 func (self *LoginValidator) Bind(c *gin.Context) error {

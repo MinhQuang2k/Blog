@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -12,12 +13,16 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+const NBSecretPassword = "A String Very Very Very Strong!!@##$!@#$"
+const NBRandomPassword = "A String Very Very Very Niubilty!!@##$!@#4"
+const bearerPrefix = "Bearer "
+
 type SignedDetails struct {
 	Id uint
 	jwt.StandardClaims
 }
-
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 func RandString(n int) string {
 	b := make([]rune, n)
@@ -27,9 +32,6 @@ func RandString(n int) string {
 	return string(b)
 }
 
-const NBSecretPassword = "A String Very Very Very Strong!!@##$!@#$"
-const NBRandomPassword = "A String Very Very Very Niubilty!!@##$!@#4"
-
 func GenToken(id uint) string {
 	claims := &SignedDetails{
 		Id: id,
@@ -38,6 +40,22 @@ func GenToken(id uint) string {
 		},
 	}
 	token, _ := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(NBSecretPassword))
+
+	return token
+}
+
+func BearerAuth(c *gin.Context) string {
+
+	authHeaderValue := c.Request.Header.Get("Authorization")
+
+	if !strings.HasPrefix(authHeaderValue, bearerPrefix) {
+		return ""
+	}
+
+	token := strings.TrimPrefix(authHeaderValue, bearerPrefix)
+	if len(token) == 0 {
+		return ""
+	}
 
 	return token
 }
