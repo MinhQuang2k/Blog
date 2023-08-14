@@ -1,0 +1,38 @@
+// collapse
+.ant-collapse {
+  border: none !important;
+  border-bottom: 1px solid #ebedf0 !important;
+  background-color: white !important;
+  border-radius: 0px !important;
+}
+
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
+  padding: 12px 15px !important;
+  padding-right: 40px !important;
+}
+
+.ant-collapse > .ant-collapse-item:last-child,
+.ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
+  border-radius: 0px !important;
+}
+.ant-collapse-item:last-child > .ant-collapse-content {
+  border-radius: 0 !important;
+}
+
+.ant-collapse-content {
+  overflow: hidden;
+  border-top: 1px solid #ebedf0 !important;
+}
+
+.ant-collapse > .ant-collapse-item {
+  border-bottom: 1px solid #ebedf0 !important;
+}
+
+.ant-collapse-content > .ant-collapse-content-box {
+  padding: 0px !important;
+}
+
+.ant-collapse .ant-collapse-item-disabled > .ant-collapse-header {
+  cursor: default !important;
+  color: rgba(0, 0, 0, 0.65) !important;
+}

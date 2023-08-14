@@ -1,0 +1,15 @@
+.fs-18 {
+  font-size: 18px;
+}
+.fs-40 {
+  font-size: 40px;
+}
+.fs-100 {
+  font-size: 100px;
+}
+
+@for $i from 10 through 100 {
+  .fs-#{$i} {
+    font-size: $i !important;
+  }
+}

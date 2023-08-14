@@ -1,0 +1,68 @@
+.layout {
+  margin-left: 230px;
+  position: relative;
+
+  &_header {
+    background: white;
+    padding: 0;
+    border-bottom: 2px solid #ebedf0;
+    .trigger {
+      font-size: 20px;
+      line-height: 64px;
+      padding: 0 15px;
+      cursor: pointer;
+      transition: color 0.3s;
+      color: #333333;
+    }
+
+    .trigger:hover {
+      color: #1890ff;
+    }
+  }
+
+  &_content {
+    overflow: auto;
+    height: calc(100vh - 64px - 69px);
+
+    &_header {
+      padding: 15px;
+      background: white;
+      height: 94px;
+    }
+
+    &_body {
+      margin: 24px 16px 0px;
+    }
+  }
+
+  &_footer {
+    background-color: white;
+    text-align: center;
+  }
+}
+
+.navbar {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  .logo {
+    height: 32px;
+    margin: 16px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .site-layout .site-layout-background {
+    background: #fff;
+  }
+
+  [data-theme="dark"] .site-layout .site-layout-background {
+    background: #141414;
+  }
+}

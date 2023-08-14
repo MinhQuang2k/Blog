@@ -1,0 +1,108 @@
+$font-family--sans-serif: "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial,
+  sans-serif;
+
+// 1rem = 10px
+$base-font-size: 62.5%;
+$base-line-height: 1.6;
+$base-bg: #141414;
+$base-font-color: #fff;
+$base-font-family: $font-family--sans-serif;
+$base-font-weight: 400;
+$base-font-style: normal;
+
+$letter-spacing: 0.4px;
+
+$primary-color: #2196f3;
+$secondary-color: #202124;
+
+$text-color: #fafafa;
+$text-color-grey: #80868b;
+
+$breakpoint-xsmall: 640px;
+$breakpoint-small: 768px;
+$breakpoint-medium: 1024px;
+$breakpoint-large: 1200px;
+$breakpoint-xlarge: 1400px;
+
+// stylelint-disable
+$spacer: 1rem !default;
+$spacers: () !default;
+$spacers: map-merge(
+  (
+    0: 0,
+    1: (
+      $spacer * 0.25,
+    ),
+    2: (
+      $spacer * 0.5,
+    ),
+    3: $spacer,
+    4: (
+      $spacer * 1.5,
+    ),
+    5: (
+      $spacer * 3,
+    ),
+  ),
+  $spacers
+);
+
+$sizes: () !default;
+$sizes: map-merge(
+  (
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+  ),
+  $sizes
+);
+
+$grid-breakpoint: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+) !default;
+
+$bg-white: #fff;
+
+$text-primary: #05216f;
+$text-white: rgb(238, 235, 235);
+$text-success: #28a745;
+$text-black: black;
+$text-yellow: #ffc107;
+
+$primary-color: #2c4a9f;
+$primary-color-hover: #003a8c;
+$primary-light-hover: #c3d9ff99;
+
+$text-disable: #8c8c8c;
+$text-dark: #212529;
+$text-muted: #6c757d;
+$text-gray-light: #4f4f4f;
+$text-danger: #f5614d;
+$btn-background-gray: #f0f0f0;
+
+$light-color: #c3d9ff;
+
+$PinkColor: rgb(231, 201, 255);
+$BlueColor: rgb(166, 221, 255);
+$yellowColor: rgb(255, 214, 185);
+$GreenColor: rgb(169, 234, 218);
+$SilverColor: rgb(149, 155, 165);
+$Online: #28a745;
+
+$FocusLink: #2c4a9f;
+$HoverLink: #003a8c;
+$TextBtn: #e9f1ff;
+$Btn: #2c4a9f;
+$BtnHover: #003a8c;
+$TextBtnHover: #212529;
+$TextMuted: #6c757d;
+$Pass: #06ba02;
+$NotPass: #dc3545;
+$NeedGrade: #dc3545;
+
+$bg-danger: #fee8e8;
