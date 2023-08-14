@@ -63,7 +63,7 @@
 <script>
 export default {
   name: "roomsCreate0",
-  auth: "true",
+
   data() {
     return {
       current: 2,

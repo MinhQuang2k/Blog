@@ -230,7 +230,7 @@
 <script>
 export default {
   name: "roomsCreate1",
-  auth: "true",
+
   data() {
     return {
       current: 2,

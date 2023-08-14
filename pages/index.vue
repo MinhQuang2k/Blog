@@ -34,7 +34,7 @@
 <script>
 export default {
   name: "dashboard",
-  auth: "true",
+
   data() {
     return {
       current: 2,

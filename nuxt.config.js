@@ -28,22 +28,23 @@ export default {
   },
 
   // Global CSS
-  css: [
-    "ant-design-vue/dist/antd.css",
-    "@/assets/css/global.scss"
-  ],
+  css: ["ant-design-vue/dist/antd.css", "@/assets/css/global.scss"],
 
   plugins: [
-    '@/plugins/antd-ui',
+    "@/plugins/antd-ui",
     "~/plugins/axios.js",
     { src: "~/plugins/mask", ssr: false },
     // { src: "~/plugins/vuex-persist.js", ssr: false },
   ],
 
-
   components: true,
 
-  modules: ["@nuxtjs/dotenv", "@nuxtjs/axios", "@nuxtjs/auth-next", "@nuxtjs/pwa"],
+  modules: [
+    "@nuxtjs/dotenv",
+    "@nuxtjs/axios",
+    "@nuxtjs/auth-next",
+    "@nuxtjs/pwa",
+  ],
 
   axios: {
     baseURL: "http://localhost:8080",
@@ -87,21 +88,21 @@ export default {
 
   router: {
     middleware: ["authenticated", "auth"],
-    trailingSlash: true,
+    // trailingSlash: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  loaders: {
-    cssModules: {
-      camelCase: true,
-      localIdentName: "[local]_[hash:base64:5]",
-    },
-  },
+  // loaders: {
+  //   cssModules: {
+  //     camelCase: true,
+  //     localIdentName: "[local]_[hash:base64:5]",
+  //   },
+  // },
 
-  vue: {
-    config: {
-      productionTip: false,
-      devtools: false,
-    },
-  },
+  // vue: {
+  //   config: {
+  //     productionTip: false,
+  //     devtools: false,
+  //   },
+  // },
 };
