@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapFields } from "vuex-map-fields";
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "QuestionTag",
 
@@ -54,12 +56,41 @@ export default {
       visible: false,
     };
   },
+  computed: {
+    ...mapFields("questionTag", {
+      list: "list",
+      current_page: "pagination.current_page",
+      total: "pagination.total",
+      limit: "pagination.limits",
+    }),
+  },
+  mounted() {
+    this.getList();
+  },
   methods: {
+    ...mapActions("questionTag", {
+      getPaging: "getPaging",
+      create: "create",
+      update: "update",
+      delete: "delete",
+    }),
+    ...mapMutations("questionTag", {
+      SET_PAGINATION: "SET_PAGINATION",
+    }),
     openModal() {
       this.visible = true;
     },
     closeModal() {
       this.visible = false;
+    },
+    async getList() {
+      const response = await this.getPaging();
+      console.log("response", response?.data);
+      if (response?.data?.code === "SUCCESS") {
+        this.limit = response?.data?.data?.rows;
+        this.SET_PAGINATION(response?.data?.data?.pagination);
+      }
+      console.log("this.limit", this.limit);
     },
   },
 };

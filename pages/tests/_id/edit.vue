@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TestEdit from "@/components/testEdit";
+import TestEdit from "@/components/test/testEdit";
 export default {
   auth: "true",
   components: {

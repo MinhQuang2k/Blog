@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Room from "@/components/Room";
+import Room from "@/components/room";
 export default {
   auth: "true",
   components: {

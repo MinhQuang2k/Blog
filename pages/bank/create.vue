@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CreateQuestion from "@/components/bank/create";
+import CreateQuestion from "@/components/bank/createQuestion";
 export default {
   auth: "true",
   components: {

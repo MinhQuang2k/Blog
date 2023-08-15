@@ -6,10 +6,10 @@ export const state = () => ({
 });
 
 export const actions = {
-  getLog({ commit, state }, params) {
-    return this.$axios.get(`/categories/all`, { params });
+  getLog({ commit, state }, payload) {
+    return this.$axios.get(`/categories/all`, { payload });
   },
-  login({}, payload) {
+  login({ }, payload) {
     return this.$axios.post("/auth/login", payload);
   },
 };
