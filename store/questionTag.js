@@ -10,20 +10,19 @@ export const state = () => ({
 });
 
 export const actions = {
-  getPaging({ commit, state }, payload) {
-    return this.$axios.get(`/api/group-questions`, { payload });
+  getPaging({ commit, state }, params) {
+    return this.$axios.get(`/api/group-questions`, { params });
   },
-  create({ }, payload) {
-    return this.$axios.post("/api/group-questions", payload);
+  create({ }, params) {
+    return this.$axios.post("/api/group-questions", params);
   },
-  update({ }, payload) {
-    const id = payload?.id
-    const data = payload?.params
-    return this.$axios.post(`/api/group-questions/${id}`, data);
+  update({ }, params) {
+    const { id, payload } = params
+    return this.$axios.put(`/api/group-questions/${id}`, payload);
   },
-  delete({ }, payload) {
-    const id = payload?.id
-    return this.$axios.post(`/api/group-questions/${id}`);
+  delete({ }, params) {
+    const id = params.id
+    return this.$axios.delete(`/api/group-questions/${id}`);
   },
 };
 export const mutations = {

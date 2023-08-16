@@ -3,69 +3,81 @@
     <div class="box-white">
       <a-row type="flex" justify="space-between">
         <a-col :span="8" class="box-search">
-          <a-input class="input-search" placeholder="Search" />
-          <a-icon type="search" class="icon-search" />
+          <a-input
+            v-model="keyword"
+            class="input-search"
+            placeholder="Search"
+          />
+          <a-icon type="search" class="icon-search pointer" @click="onSearch" />
         </a-col>
         <a-col :span="4" class="d-flex justify-content-end"
-          ><a-button type="primary" @click="openModal"
-            >Add Group Question</a-button
+          ><a-button type="primary" @click="showModalAdd"
+            >Tạo Nhóm Câu Hỏi</a-button
           ></a-col
         >
       </a-row>
     </div>
-    <div class="box-white">
-      <a-row type="flex" justify="space-between">
-        <a-col :span="6"> text seach </a-col>
+    <div v-for="item in list" :key="item.id" class="box-white">
+      <a-row v-if="currentId !== item.id" type="flex" justify="space-between">
+        <a-col :span="6"> {{ item.name }} </a-col>
         <a-col>
-          <a-button type="link"> <a-icon type="delete" /></a-button>
-          <a-button type="link"> <a-icon type="edit" /></a-button>
+          <a-button type="link" @click="onDelete(item.id)">
+            <a-icon type="delete"
+          /></a-button>
+          <a-button type="link" @click="onShowEdit(item)">
+            <a-icon type="edit"
+          /></a-button>
         </a-col>
       </a-row>
-      <a-row type="flex" justify="space-between">
-        <a-col :span="6"><a-input value="text seach" /> </a-col>
+      <a-row v-else type="flex" justify="space-between">
+        <a-col :span="6"><a-input v-model="currentName" /> </a-col>
         <a-col>
-          <a-button> Hủy</a-button>
-          <a-button type="primary"> Cập nhật</a-button>
-        </a-col>
-      </a-row>
-    </div>
-    <div class="box-white">
-      <a-row type="flex" justify="space-between">
-        <a-col :span="6"> text seach </a-col>
-        <a-col>
-          <a-button type="link"> <a-icon type="delete" /></a-button>
-          <a-button type="link"> <a-icon type="edit" /></a-button>
+          <a-button @click="onResetInput"> Hủy</a-button>
+          <a-button type="primary" @click="onEdit"> Cập nhật</a-button>
         </a-col>
       </a-row>
     </div>
     <div class="mt-4 d-flex justify-content-end">
-      <a-pagination v-model="current" :total="50" show-less-items />
+      <a-pagination
+        v-model="pagination.current_page"
+        :total="total"
+        :page-size="limit"
+        show-less-items
+        @change="onChangePaging"
+      />
     </div>
+    <ModalAdd :isShow.sync="isShowModal" @onSave="onAddQuestionTag" />
   </div>
 </template>
 
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapActions, mapMutations } from "vuex";
+import ModalAdd from "./modal/modalAdd.vue";
 export default {
   name: "QuestionTag",
-
+  components: {
+    ModalAdd,
+  },
   data() {
     return {
       current: 2,
-      visible: false,
+      isShowModal: false,
+      currentName: "",
+      currentId: null,
+      keyword: "",
     };
   },
   computed: {
     ...mapFields("questionTag", {
       list: "list",
-      current_page: "pagination.current_page",
+      pagination: "pagination",
       total: "pagination.total",
-      limit: "pagination.limits",
+      limit: "pagination.limit",
     }),
   },
   mounted() {
-    this.getList();
+    this.getList({ limit: 3 });
   },
   methods: {
     ...mapActions("questionTag", {
@@ -77,20 +89,69 @@ export default {
     ...mapMutations("questionTag", {
       SET_PAGINATION: "SET_PAGINATION",
     }),
-    openModal() {
-      this.visible = true;
-    },
-    closeModal() {
-      this.visible = false;
-    },
-    async getList() {
-      const response = await this.getPaging();
-      console.log("response", response?.data);
+    async getList(params) {
+      const response = await this.getPaging(params);
       if (response?.data?.code === "SUCCESS") {
-        this.limit = response?.data?.data?.rows;
+        this.list = response?.data?.data?.rows;
         this.SET_PAGINATION(response?.data?.data?.pagination);
       }
-      console.log("this.limit", this.limit);
+    },
+    onShowEdit(item) {
+      this.currentId = item.id;
+      this.currentName = item.name;
+    },
+    onResetInput() {
+      this.currentId = null;
+      this.currentName = "";
+    },
+    async onEdit() {
+      const response = await this.update({
+        id: this.currentId,
+        payload: {
+          name: this.currentName,
+        },
+      });
+
+      if (response?.data?.code === "SUCCESS") {
+        await this.getList();
+        this.onResetInput();
+      }
+    },
+    async onDelete(id) {
+      const response = await this.delete({
+        id: id,
+      });
+
+      if (response?.data?.code === "SUCCESS") {
+        await this.getList();
+        this.onResetInput();
+      }
+    },
+    showModalAdd() {
+      this.isShowModal = true;
+    },
+    async onAddQuestionTag(data) {
+      const response = await this.create(data);
+
+      if (response?.data?.code === "SUCCESS") {
+        await this.getList();
+      }
+    },
+    async onSearch() {
+      const params = {
+        name: this.keyword.trim(),
+        page: 1,
+        limit: this.limit,
+      };
+      await this.getList(params);
+    },
+    async onChangePaging(current) {
+      const params = {
+        name: this.keyword.trim(),
+        page: current,
+        limit: this.limit,
+      };
+      await this.getList(params);
     },
   },
 };
