@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Bank from "@/components/bank";
+import Bank from "@/components/question/bank";
 export default {
   auth: "true",
   components: {

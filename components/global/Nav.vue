@@ -87,7 +87,7 @@ export default {
             {
               key: 51,
               name: "Ngân hàng của tôi",
-              link: "/bank",
+              link: "/questions/bank",
               icon: "",
             },
             {

@@ -12,12 +12,14 @@
             default-value="new"
             @change="selectGroupQuestion"
           >
-            <a-select-option value="new"> Tạo gần đây </a-select-option>
-            <a-select-option value="order"> A-Z </a-select-option>
+            <a-select-option value="recent"> Tạo gần đây </a-select-option>
+            <a-select-option value="alphabet"> A-Z </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="4" :offset="7" class="d-flex justify-content-end"
-          ><a-button type="primary">Tạo câu hỏi</a-button></a-col
+          ><a-button type="primary" @click="onAddQuestion"
+            >Tạo câu hỏi</a-button
+          ></a-col
         >
       </a-row>
     </div>
@@ -124,10 +126,16 @@ export default {
     };
   },
   methods: {
+    onAddQuestion() {
+      this.$router.push({
+        path: "/questions/create",
+      });
+    },
     selectSubject(value) {
       console.log(`selected ${value}`);
     },
     selectGroupQuestion(value) {
+      //sort_by
       console.log(`selected ${value}`);
     },
   },

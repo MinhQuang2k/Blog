@@ -1,3 +1,5 @@
+// sort_by: recent;
+// sort_by: alphabet;
 import { getField, updateField } from "vuex-map-fields";
 
 export const state = () => ({
@@ -11,10 +13,7 @@ export const state = () => ({
 
 export const actions = {
   getPaging({}, params) {
-    return this.$axios.get("/api/group-questions", { params });
-  },
-  getAll() {
-    return this.$axios.get("/api/group-questions/all");
+    return this.$axios.get(`/api/group-questions`, { params });
   },
   create({}, params) {
     return this.$axios.post("/api/group-questions", params);

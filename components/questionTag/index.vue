@@ -11,7 +11,7 @@
           <a-icon type="search" class="icon-search pointer" @click="onSearch" />
         </a-col>
         <a-col :span="4" class="d-flex justify-content-end"
-          ><a-button type="primary" @click="showModalAdd"
+          ><a-button type="primary" @click="onShowModalAdd"
             >Tạo Nhóm Câu Hỏi</a-button
           ></a-col
         >
@@ -46,7 +46,7 @@
         @change="onChangePaging"
       />
     </div>
-    <ModalAdd :isShow.sync="isShowModal" @onSave="onAddQuestionTag" />
+    <ModalAdd :isShow.sync="isShowModal" @onSave="onAdd" />
   </div>
 </template>
 
@@ -61,7 +61,6 @@ export default {
   },
   data() {
     return {
-      current: 2,
       isShowModal: false,
       currentName: "",
       currentId: null,
@@ -77,7 +76,7 @@ export default {
     }),
   },
   mounted() {
-    this.getList({ limit: 3 });
+    this.getList();
   },
   methods: {
     ...mapActions("questionTag", {
@@ -113,8 +112,15 @@ export default {
       });
 
       if (response?.data?.code === "SUCCESS") {
+        this.$notification["success"]({
+          message: "Chỉnh sửa thành công",
+        });
         await this.getList();
         this.onResetInput();
+      } else {
+        this.$notification["error"]({
+          message: "Lôĩ khi chỉnh sửa",
+        });
       }
     },
     async onDelete(id) {
@@ -123,18 +129,31 @@ export default {
       });
 
       if (response?.data?.code === "SUCCESS") {
+        this.$notification["success"]({
+          message: "Xóa thành công",
+        });
         await this.getList();
-        this.onResetInput();
+      } else {
+        this.$notification["error"]({
+          message: "Lôĩ khi xóa",
+        });
       }
     },
-    showModalAdd() {
+    onShowModalAdd() {
       this.isShowModal = true;
     },
-    async onAddQuestionTag(data) {
+    async onAdd(data) {
       const response = await this.create(data);
 
       if (response?.data?.code === "SUCCESS") {
+        this.$notification["success"]({
+          message: "Tạo thành công",
+        });
         await this.getList();
+      } else {
+        this.$notification["error"]({
+          message: "Lôĩ khi tạo",
+        });
       }
     },
     async onSearch() {
