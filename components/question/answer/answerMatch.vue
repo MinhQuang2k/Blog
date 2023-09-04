@@ -3,30 +3,46 @@
     <h4>Đáp án</h4>
     <div class="d-flex g-4">
       <div class="df-1">
-        <div class="d-flex align-items-center my-3">
-          <div class="mr-3">1.</div>
-          <a-input placeholder="Nhập nội dung" />
-          <a-button type="link"><a-icon type="close-circle" /></a-button>
+        <h4 class="text-center">Cột 1</h4>
+        <div
+          v-for="item in questions"
+          :key="item.id"
+          class="d-flex align-items-center my-3"
+        >
+          <div class="mr-3">{{ item.id }}.</div>
+          <a-input
+            :value="item.content"
+            @input="onChangeQuestion($event, item.id)"
+            placeholder="Nhập nội dung"
+          />
+          <a-button type="link" @click="onDeleteQuestion(item.id)"
+            ><a-icon type="close-circle"
+          /></a-button>
         </div>
-        <div class="d-flex align-items-center my-3">
-          <div class="mr-3">2.</div>
-          <a-input placeholder="Nhập nội dung" />
-          <a-button type="link"><a-icon type="close-circle" /></a-button>
-        </div>
-        <a-button type="primary" class="mt-3">Thêm đáp án</a-button>
+        <a-button type="primary" @click="onAddQuestion" class="mt-3"
+          >Thêm đáp án</a-button
+        >
       </div>
       <div class="df-1">
-        <div class="d-flex align-items-center my-3">
-          <div class="mr-3">A.</div>
-          <a-input placeholder="Nhập nội dung" />
-          <a-button type="link"><a-icon type="close-circle" /></a-button>
+        <h4 class="text-center">Cột 2</h4>
+        <div
+          v-for="item in answers"
+          :key="item.id"
+          class="d-flex align-items-center my-3"
+        >
+          <div class="mr-3">{{ upperCase(item.id) }}.</div>
+          <a-input
+            :value="item.content"
+            @input="onChangeAnswer($event, item.id)"
+            placeholder="Nhập nội dung"
+          />
+          <a-button type="link" @click="onDeleteAnswer(item.id)"
+            ><a-icon type="close-circle"
+          /></a-button>
         </div>
-        <div class="d-flex align-items-center my-3">
-          <div class="mr-3">B.</div>
-          <a-input placeholder="Nhập nội dung" />
-          <a-button type="link"><a-icon type="close-circle" /></a-button>
-        </div>
-        <a-button type="primary" class="mt-3">Thêm đáp án</a-button>
+        <a-button type="primary" @click="onAddAnswer" class="mt-3"
+          >Thêm đáp án</a-button
+        >
       </div>
     </div>
     <h4 class="mt-5">Chọn đáp án</h4>
@@ -38,18 +54,18 @@
       <table class="table-match">
         <tr>
           <th></th>
-          <th class="text-center">A</th>
-          <th class="text-center">B</th>
+          <th v-for="item in answers" :key="item.id" class="text-center">
+            {{ upperCase(item.id) }}
+          </th>
         </tr>
-        <tr>
-          <th>1</th>
-          <td><a-checkbox /></td>
-          <td><a-checkbox /></td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td><a-checkbox /></td>
-          <td><a-checkbox /></td>
+        <tr v-for="(question, index) in questions" :key="question.id">
+          <th>{{ index + 1 }}</th>
+          <td v-for="answer in answers" :key="answer.id">
+            <a-checkbox
+              @change="onCheck(question.id, answer.id)"
+              :checked="getChecked(question.id, answer.id)"
+            />
+          </td>
         </tr>
       </table>
     </div>
@@ -57,11 +73,121 @@
 </template>
 
 <script>
+import { mapFields } from "vuex-map-fields";
+import generate from "~/mixins/generate";
+import { CODE_CHAR_START } from "~/constants/question";
 export default {
-  name: "",
-  data() {
-    return {};
+  name: "AnswerMatch",
+  mixins: [generate],
+  computed: {
+    ...mapFields("question", {
+      questions: "matchingAnswers.questions",
+      answers: "matchingAnswers.answers",
+      correctAnswers: "matchingCorrectAnswers",
+    }),
   },
-  methods: {},
+  data() {
+    return {
+      CODE_CHAR_START,
+    };
+  },
+  methods: {
+    onDeleteAnswer(id) {
+      let newCorrectAnswers = { ...this.correctAnswers };
+      for (let i = 1; i <= this.questions.length; i++) {
+        newCorrectAnswers[i] = newCorrectAnswers[i]
+          .filter((item) => item !== id)
+          .map((item) => {
+            if (item.charCodeAt(0) > id.charCodeAt(0)) {
+              return String.fromCharCode(item.charCodeAt(0) - 1);
+            }
+            return item;
+          });
+      }
+      this.correctAnswers = newCorrectAnswers;
+      this.answers = this.answers
+        .filter((item) => item.id !== id)
+        .map((item, index) => ({
+          ...item,
+          id: String.fromCharCode(index + CODE_CHAR_START),
+        }));
+    },
+    onDeleteQuestion(id) {
+      let newCorrectAnswers = { ...this.correctAnswers };
+      for (let i = id; i < this.questions.length; i++) {
+        newCorrectAnswers[i] = newCorrectAnswers[i + 1];
+      }
+      delete newCorrectAnswers[this.questions.length];
+      this.correctAnswers = newCorrectAnswers;
+      this.questions = this.questions
+        .filter((item) => item.id !== id)
+        .map((item, index) => ({
+          ...item,
+          id: index + 1,
+        }));
+    },
+    onChangeQuestion(event, id) {
+      this.questions = this.questions.map((item) => {
+        if (item.id === id) {
+          return {
+            id: id,
+            content: event.target.value,
+          };
+        }
+        return item;
+      });
+    },
+    onChangeAnswer(event, id) {
+      this.answers = this.answers.map((item) => {
+        if (item.id === id) {
+          return {
+            id: id,
+            content: event.target.value,
+          };
+        }
+        return item;
+      });
+    },
+    onAddAnswer() {
+      this.answers = [
+        ...this.answers,
+        {
+          id: String.fromCharCode(this.answers.length + CODE_CHAR_START),
+          content: "",
+        },
+      ];
+    },
+    onAddQuestion() {
+      this.questions = [
+        ...this.questions,
+        {
+          id: this.questions.length + 1,
+          content: "",
+        },
+      ];
+      this.correctAnswers = {
+        ...this.correctAnswers,
+        [this.questions.length]: [],
+      };
+    },
+    getChecked(questionId, answerId) {
+      return (this.correctAnswers[questionId] || []).includes(answerId);
+    },
+    onCheck(questionId, answerId) {
+      if (this.correctAnswers[questionId].includes(answerId)) {
+        this.correctAnswers = {
+          ...this.correctAnswers,
+          [questionId]: this.correctAnswers[questionId].filter(
+            (item) => item !== answerId
+          ),
+        };
+      } else {
+        this.correctAnswers = {
+          ...this.correctAnswers,
+          [questionId]: [...this.correctAnswers[questionId], answerId],
+        };
+      }
+    },
+  },
 };
 </script>

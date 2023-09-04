@@ -73,7 +73,7 @@
         <div class="box-white">
           <a-row>
             <a-col :span="10" :offset="2">
-              <AnswerInfoFillWord />
+              <AnswerInfoFillBlank />
               <ListTest />
             </a-col>
             <a-col :span="12">

@@ -28,13 +28,21 @@
       </div>
       <div><a-icon type="folder" class="fs-40" /></div>
     </div>
+    <div>
+      <Fake
+        v-for="(item, index) in list"
+        :key="index"
+        :dataIndex="item.key"
+        :price="item.id"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "dashboard",
-
+  components: [Fake],
   data() {
     return {
       current: 2,

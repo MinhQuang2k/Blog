@@ -35,9 +35,9 @@
         <Note />
       </div>
       <!-- Điền từ -->
-      <div v-if="questionType === QUESTION_TYPE.FILLWORD" class="df-8">
-        <QuestionFillWord />
-        <AnswerFillWord />
+      <div v-if="questionType === QUESTION_TYPE.FILLBLANK" class="df-8">
+        <QuestionFillBlank />
+        <AnswerFillBlank />
         <Note />
       </div>
     </div>
@@ -48,23 +48,23 @@
 import { QUESTION_TYPE } from "~/constants/question.js";
 import Setting from "./setting";
 import Question from "./question/question.vue";
-import QuestionFillWord from "./question/questionFillWord.vue";
+import QuestionFillBlank from "./question/questionFillBlank.vue";
 import Note from "./note";
 import AnswerMuliti from "./answer/answerMuliti.vue";
 import AnswerBoolean from "./answer/answerBoolean.vue";
 import AnswerMatch from "./answer/answerMatch.vue";
-import AnswerFillWord from "./answer/answerFillWord.vue";
+import AnswerFillBlank from "./answer/answerFillBlank.vue";
 export default {
   name: "bankCreate",
   components: {
     Setting,
     Question,
-    QuestionFillWord,
+    QuestionFillBlank,
     Note,
     AnswerMuliti,
     AnswerBoolean,
     AnswerMatch,
-    AnswerFillWord,
+    AnswerFillBlank,
   },
   data() {
     return {
