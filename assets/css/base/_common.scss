@@ -13,3 +13,22 @@
 .pointer {
   cursor: pointer;
 }
+
+.is-valid::before {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 1rem;
+    bottom: 0;
+    width: 2.5rem;
+    height: 1.8rem;
+    margin: auto;
+    content: '';
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    background: url('~assets/images/icon/icon_valid.svg') no-repeat 50% 50%;
+}
+
+.ant-tooltip{
+  padding-top: 6px !important;
+}

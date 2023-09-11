@@ -73,9 +73,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("category", {
-      getAll: "getAll",
-    }),
+    ...mapActions("category", ["getAll"]),
     onClose() {
       this.onReset();
       this.$emit("update:isShow", false);

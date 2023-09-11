@@ -24,9 +24,6 @@
           <nuxt />
         </div>
       </a-layout-content>
-      <a-layout-footer class="layout_footer">
-        Quiztest ©2023 tạo bởi Quang
-      </a-layout-footer>
     </a-layout>
   </div>
 </template>

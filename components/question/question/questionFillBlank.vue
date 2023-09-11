@@ -1,14 +1,14 @@
 <template>
   <div class="box-white mb-4">
     <h4>Câu hỏi</h4>
-    <div v-if="isShowQuestion">
+    <div v-if="isShowQuestion" class="d-flex justify-content-between">
+      <div v-html="convertToHTML(content)"></div>
       <div class="text-right wr-100">
         <a-button type="link" @click="onEdit"><a-icon type="edit" /></a-button>
       </div>
-      <div v-html="convertToHTML(content)"></div>
     </div>
     <div v-else>
-      <a-textarea v-model="content" placeholder="Nhập nội dung" :rows="8" />
+      <TinyMCE :value.sync="content" @change="onChange" type="big" />
       <p>
         <b>Hướng dẫn</b> Để tạo chỗ trống tại vị trí con trỏ chuột của bạn, hãy
         nhập theo định dạng sau [%Tên_chỗ_trống%]. Tên chỗ trống chỉ nhập số,
@@ -33,6 +33,7 @@ export default {
   computed: {
     ...mapFields("question", {
       content: "content",
+      correctAnswers: "fillBlankCorrectAnswers",
     }),
   },
   data() {
@@ -40,9 +41,32 @@ export default {
       isShowQuestion: true,
     };
   },
+  mounted() {
+    if (this.content) {
+      this.isShowQuestion = true;
+    } else {
+      this.isShowQuestion = false;
+    }
+  },
   methods: {
     onSave() {
       this.isShowQuestion = true;
+      var regex = /\[(.*?)\]/g;
+      var matches = this.content.match(regex) || [];
+      this.correctAnswers = this.correctAnswers.filter(
+        (item) => item.key <= matches.length
+      );
+      for (var i = 1; i <= matches.length; i++) {
+        if (!this.correctAnswers.find((item) => item.key === i)) {
+          this.correctAnswers = [
+            ...this.correctAnswers,
+            {
+              key: i,
+              content: [""],
+            },
+          ];
+        }
+      }
     },
     onEdit() {
       this.isShowQuestion = false;
@@ -53,11 +77,13 @@ export default {
 
       for (var i = 0; i < matches.length; i++) {
         var replacement =
-          "<b>" + matches[i].replace("[", "").replace("]", "") + "</b>";
+          "<b>" + matches[i].replace("[%", "_").replace("%]", "_") + "</b>";
         input = input.replace(matches[i], replacement);
       }
-
       return input;
+    },
+    onChange(value) {
+      this.content = value;
     },
   },
 };

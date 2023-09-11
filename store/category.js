@@ -43,6 +43,9 @@ export const actions = {
     const { id, payload } = params;
     return this.$axios.put(`/api/subjects/move/${id}`, payload);
   },
+  setPagination({ commit }) {
+    commit("SET_PAGINATION");
+  },
 };
 export const mutations = {
   updateField,

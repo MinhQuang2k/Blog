@@ -22,7 +22,7 @@
 
   &_content {
     overflow: auto;
-    height: calc(100vh - 64px - 69px);
+    height: calc(100vh - 64px);
 
     &_header {
       padding: 15px;
@@ -33,11 +33,6 @@
     &_body {
       margin: 24px 16px 0px;
     }
-  }
-
-  &_footer {
-    background-color: white;
-    text-align: center;
   }
 }
 

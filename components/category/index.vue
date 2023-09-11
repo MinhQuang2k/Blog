@@ -139,19 +139,17 @@ export default {
     this.getList();
   },
   methods: {
-    ...mapActions("category", {
-      getPaging: "getPaging",
-      create: "create",
-      update: "update",
-      delete: "delete",
-      createSub: "createSub",
-      updateSub: "updateSub",
-      deleteSub: "deleteSub",
-      moveSub: "moveSub",
-    }),
-    ...mapMutations("category", {
-      SET_PAGINATION: "SET_PAGINATION",
-    }),
+    ...mapActions("category", [
+      "getPaging",
+      "create",
+      "update",
+      "delete",
+      "createSub",
+      "updateSub",
+      "deleteSub",
+      "moveSub",
+      "setPagination",
+    ]),
     onShowModalAdd() {
       this.isShowAdd = true;
     },
@@ -316,7 +314,7 @@ export default {
       const response = await this.getPaging(params);
       if (response?.data?.code === "SUCCESS") {
         this.list = response?.data?.data?.rows;
-        this.SET_PAGINATION(response?.data?.data?.pagination);
+        this.setPagination(response?.data?.data?.pagination);
       }
     },
     async onChangePaging(current) {

@@ -27,6 +27,9 @@ export const actions = {
     const id = params.id;
     return this.$axios.delete(`/api/group-questions/${id}`);
   },
+  setPagination({ commit }) {
+    commit("SET_PAGINATION");
+  },
 };
 export const mutations = {
   updateField,

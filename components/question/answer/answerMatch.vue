@@ -10,10 +10,9 @@
           class="d-flex align-items-center my-3"
         >
           <div class="mr-3">{{ item.id }}.</div>
-          <a-input
-            :value="item.content"
-            @input="onChangeQuestion($event, item.id)"
-            placeholder="Nhập nội dung"
+          <TinyMCE
+            :value.sync="item.content"
+            @change="onChangeQuestion($event, item.id)"
           />
           <a-button type="link" @click="onDeleteQuestion(item.id)"
             ><a-icon type="close-circle"
@@ -31,10 +30,9 @@
           class="d-flex align-items-center my-3"
         >
           <div class="mr-3">{{ upperCase(item.id) }}.</div>
-          <a-input
-            :value="item.content"
-            @input="onChangeAnswer($event, item.id)"
-            placeholder="Nhập nội dung"
+          <TinyMCE
+            :value.sync="item.content"
+            @change="onChangeAnswer($event, item.id)"
           />
           <a-button type="link" @click="onDeleteAnswer(item.id)"
             ><a-icon type="close-circle"
@@ -76,9 +74,11 @@
 import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
 import { CODE_CHAR_START } from "~/constants/question";
+import TinyMCE from "@/components/global/TinyMCE";
 export default {
   name: "AnswerMatch",
   mixins: [generate],
+  components: [TinyMCE],
   computed: {
     ...mapFields("question", {
       questions: "matchingAnswers.questions",
@@ -126,23 +126,23 @@ export default {
           id: index + 1,
         }));
     },
-    onChangeQuestion(event, id) {
+    onChangeQuestion(value, id) {
       this.questions = this.questions.map((item) => {
         if (item.id === id) {
           return {
             id: id,
-            content: event.target.value,
+            content: value,
           };
         }
         return item;
       });
     },
-    onChangeAnswer(event, id) {
+    onChangeAnswer(value, id) {
       this.answers = this.answers.map((item) => {
         if (item.id === id) {
           return {
             id: id,
-            content: event.target.value,
+            content: value,
           };
         }
         return item;

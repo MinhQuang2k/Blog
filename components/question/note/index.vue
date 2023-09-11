@@ -1,7 +1,7 @@
 <template>
   <div class="box-white">
     <h4>Giải thích đáp án</h4>
-    <a-textarea v-model="noteAnswer" placeholder="Nhập nội dung" :rows="8" />
+    <TinyMCE :value.sync="noteAnswer" @change="onChange" type="big" />
   </div>
 </template>
 
@@ -14,6 +14,10 @@ export default {
       noteAnswer: "noteAnswer",
     }),
   },
-  methods: {},
+  methods: {
+    onChange(value) {
+      this.noteAnswer = value;
+    },
+  },
 };
 </script>

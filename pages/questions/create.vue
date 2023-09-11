@@ -1,13 +1,20 @@
 <template>
-  <Create />
+  <FormQuestion />
 </template>
 
 <script>
-import Create from "@/components/question/create";
+import FormQuestion from "@/components/question/formQuestion";
+import { mapActions } from "vuex";
 export default {
   auth: "true",
   components: {
-    Create,
+    FormQuestion,
+  },
+  methods: {
+    ...mapActions("question", ["resetState"]),
+  },
+  mounted() {
+    this.resetState();
   },
 };
 </script>

@@ -2,35 +2,68 @@
   <editor
     api-key="b3m4owtz9mxa6zl1otn948snen4m5np54rm3w5s6a5zny4kz"
     cloudChannel="5-stable"
-    @selectionChange="onChange"
+    :value="value"
+    @input="onChange"
     :inline="true"
-    :init="{
-      menubar: false,
-      placeholder: 'Nhập nội dung',
-      plugins: [
-        'advlist autolink lists link charmap preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime table paste help autoresize',
-      ],
-      toolbar_mode: 'sliding',
-      toolbar:
-        ' bold italic underline | forecolor backcolor casechange ' +
-        ' permanentpen formatpainter | numlist bullist checklist | ' +
-        ' pageembed template link |alignleft aligncenter alignright alignjustify |  ',
-    }"
+    :class="type"
+    :init="config"
   />
 </template>
 
 <script>
 export default {
+  props: {
+    value: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "small",
+    },
+    placeholder: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
-      content: "",
+      config: {
+        menubar: false,
+        placeholder: "Nhập nội dung",
+        plugins: [
+          "advlist autolink lists link charmap preview anchor",
+          "searchreplace visualblocks code fullscreen",
+          "insertdatetime table paste help autoresize",
+        ],
+        toolbar_mode: "sliding",
+        toolbar:
+          " bold italic underline | forecolor backcolor casechange " +
+          " permanentpen formatpainter | numlist bullist checklist | " +
+          " pageembed template link |alignleft aligncenter alignright alignjustify |  ",
+      },
     };
   },
+  mounted() {
+    if (this.type === "small") {
+      this.config = {
+        ...this.config,
+        setup: function (editor) {
+          editor.on("keydown", function (e) {
+            var keyCode = e.keyCode || e.which;
+
+            if (keyCode === 13) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          });
+        },
+      };
+    }
+  },
   methods: {
-    onChange(value) {
-      console.log("onChange", value);
+    onChange(val) {
+      this.$emit("change", val);
     },
   },
 };
@@ -46,7 +79,6 @@ export default {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 32px;
   padding: 4px 11px;
   color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
@@ -56,6 +88,16 @@ export default {
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   transition: all 0.3s;
+}
+
+.small.mce-content-body {
+  height: 32px;
+  overflow-y: hidden;
+}
+
+.big.mce-content-body {
+  height: 144px;
+  overflow-y: auto;
 }
 
 .mce-content-body:before {

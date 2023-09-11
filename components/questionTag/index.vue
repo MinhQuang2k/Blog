@@ -79,20 +79,18 @@ export default {
     this.getList();
   },
   methods: {
-    ...mapActions("questionTag", {
-      getPaging: "getPaging",
-      create: "create",
-      update: "update",
-      delete: "delete",
-    }),
-    ...mapMutations("questionTag", {
-      SET_PAGINATION: "SET_PAGINATION",
-    }),
+    ...mapActions("questionTag", [
+      "getPaging",
+      "create",
+      "update",
+      "delete",
+      "setPagination",
+    ]),
     async getList(params) {
       const response = await this.getPaging(params);
       if (response?.data?.code === "SUCCESS") {
         this.list = response?.data?.data?.rows;
-        this.SET_PAGINATION(response?.data?.data?.pagination);
+        this.setPagination(response?.data?.data?.pagination);
       }
     },
     onShowEdit(item) {

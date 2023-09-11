@@ -9,10 +9,9 @@
       >
         <a-checkbox :value="item.id" class="mr-3"></a-checkbox>
         <div class="mr-3">{{ upperCaseAnswer(item.id) }}</div>
-        <a-input
-          :value="item.content"
-          @input="onChange($event, item.id)"
-          placeholder="Nhập nội dung"
+        <TinyMCE
+          :value.sync="item.content"
+          @change="onChange($event, item.id)"
         />
         <a-button
           type="link"
@@ -35,9 +34,11 @@
 import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
 import { CODE_CHAR_START } from "~/constants/question";
+import TinyMCE from "@/components/global/TinyMCE";
 export default {
   name: "AnswerMuliti",
   mixins: [generate],
+  components: [TinyMCE],
   data() {
     return {
       CODE_CHAR_START,
@@ -50,12 +51,12 @@ export default {
     }),
   },
   methods: {
-    onChange(event, id) {
+    onChange(value, id) {
       this.answers = this.answers.map((item) => {
         if (item.id === id) {
           return {
             id: id,
-            content: event.target.value,
+            content: value,
           };
         }
         return item;

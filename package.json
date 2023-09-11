@@ -24,6 +24,7 @@
     "nuxt": "^2.15.8",
     "smoothscroll-polyfill": "^0.4.4",
     "tiny-cookie": "^2.3.2",
+    "tinymce": "^6.7.0",
     "uuid": "^9.0.0",
     "v-mask": "^2.3.0",
     "vue": "^2.7.10",

@@ -6,9 +6,15 @@
       - Để ghi nhận nhiều hơn một đáp án đúng, vui lòng ngăn cách các đáp án
       bằng dấu chấm phẩy
     </p>
-    <div class="d-flex align-items-center my-3">
-      <div v-for="item in correctAnswers" :key="item.key">
-        <div class="mr-3">{{ item.key }}</div>
+    <div>
+      <div
+        v-for="item in correctAnswers"
+        :key="item.key"
+        class="d-flex align-items-center my-3"
+      >
+        <div class="mr-3">
+          <b>{{ item.key }}.</b>
+        </div>
         <a-input
           :value="item.content"
           @input="onChange($event, item.key)"
@@ -22,12 +28,14 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
+import TinyMCE from "@/components/global/TinyMCE";
 export default {
   name: "AnswerFillBlank",
   mixins: [generate],
+  components: [TinyMCE],
   computed: {
     ...mapFields("question", {
-      correctAnswers: "correctAnswerBoolean",
+      correctAnswers: "fillBlankCorrectAnswers",
     }),
   },
   methods: {
