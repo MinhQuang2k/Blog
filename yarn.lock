@@ -8318,6 +8318,11 @@ tinycolor2@^1.4.1:
   resolved "https://registry.npmjs.org/tinycolor2/-/tinycolor2-1.6.0.tgz"
   integrity sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==
 
+tinymce@^5.6.2:
+  version "5.10.7"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.10.7.tgz#d89d446f1962f2a1df6b2b70018ce475ec7ffb80"
+  integrity sha512-9UUjaO0R7FxcFo0oxnd1lMs7H+D0Eh+dDVo5hKbVe1a+VB0nit97vOqlinj+YwgoBDt6/DSCUoWqAYlLI8BLYA==
+
 "tinymce@^6.0.0 || ^5.5.1", tinymce@^6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.7.0.tgz#0ec245502cdefbfa0ff9042b423ac9a01e781423"
@@ -8765,6 +8770,13 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+
+vue2-tinymce-editor@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/vue2-tinymce-editor/-/vue2-tinymce-editor-0.0.1.tgz#d13da683f94780dfdb1529e477b0c23080a7b9e8"
+  integrity sha512-uNMwtUr8VLmyC+ENFnqGWcH8fksA99hHlc9as0mb8o/nlNaepNWsy/lu86n6fXQ55es69PI02AGfA1l16AMmHQ==
+  dependencies:
+    tinymce "^5.6.2"
 
 vue@^2.7.10:
   version "2.7.14"
