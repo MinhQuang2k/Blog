@@ -63,6 +63,7 @@ export default {
   },
   methods: {
     onChange(val) {
+      console.log("onChange", onChange);
       this.$emit("change", val);
     },
   },

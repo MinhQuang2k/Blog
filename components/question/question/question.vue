@@ -1,25 +1,25 @@
 <template>
   <div class="box-white mb-4">
     <h4>Câu hỏi</h4>
-    <TinyMCE :value.sync="content" @change="onChange" type="big" />
+    <TinyMCE :value="content" @change="onChange" type="big" />
   </div>
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
 export default {
   name: "Question",
   data() {
     return {};
   },
-  computed: {
-    ...mapFields("question", {
-      content: "content",
-    }),
+  props: {
+    content: {
+      type: String,
+      default: "",
+    },
   },
   methods: {
     onChange(value) {
-      this.content = value;
+      this.$emit("update:content", value);
     },
   },
 };

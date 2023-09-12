@@ -11,7 +11,7 @@
         >
           <div class="mr-3">{{ item.id }}.</div>
           <TinyMCE
-            :value.sync="item.content"
+            :value="item.content"
             @change="onChangeQuestion($event, item.id)"
           />
           <a-button type="link" @click="onDeleteQuestion(item.id)"
@@ -31,7 +31,7 @@
         >
           <div class="mr-3">{{ upperCase(item.id) }}.</div>
           <TinyMCE
-            :value.sync="item.content"
+            :value="item.content"
             @change="onChangeAnswer($event, item.id)"
           />
           <a-button type="link" @click="onDeleteAnswer(item.id)"
@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
 import { CODE_CHAR_START } from "~/constants/question";
 import TinyMCE from "@/components/global/TinyMCE";
@@ -79,12 +78,19 @@ export default {
   name: "AnswerMatch",
   mixins: [generate],
   components: [TinyMCE],
-  computed: {
-    ...mapFields("question", {
-      questions: "matchingAnswers.questions",
-      answers: "matchingAnswers.answers",
-      correctAnswers: "matchingCorrectAnswers",
-    }),
+  props: {
+    questions: {
+      type: Array,
+      default: () => [],
+    },
+    answers: {
+      type: Array,
+      default: () => [],
+    },
+    correctAnswers: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -104,13 +110,16 @@ export default {
             return item;
           });
       }
-      this.correctAnswers = newCorrectAnswers;
-      this.answers = this.answers
-        .filter((item) => item.id !== id)
-        .map((item, index) => ({
-          ...item,
-          id: String.fromCharCode(index + CODE_CHAR_START),
-        }));
+      this.$emit("update:correctAnswers", newCorrectAnswers);
+      this.$emit(
+        "update:answers",
+        this.answers
+          .filter((item) => item.id !== id)
+          .map((item, index) => ({
+            ...item,
+            id: String.fromCharCode(index + CODE_CHAR_START),
+          }))
+      );
     },
     onDeleteQuestion(id) {
       let newCorrectAnswers = { ...this.correctAnswers };
@@ -118,75 +127,86 @@ export default {
         newCorrectAnswers[i] = newCorrectAnswers[i + 1];
       }
       delete newCorrectAnswers[this.questions.length];
-      this.correctAnswers = newCorrectAnswers;
-      this.questions = this.questions
-        .filter((item) => item.id !== id)
-        .map((item, index) => ({
-          ...item,
-          id: index + 1,
-        }));
+      this.$emit("update:correctAnswers", newCorrectAnswers);
+      this.$emit(
+        "update:questions",
+        this.questions
+          .filter((item) => item.id !== id)
+          .map((item, index) => ({
+            ...item,
+            id: index + 1,
+          }))
+      );
     },
     onChangeQuestion(value, id) {
-      this.questions = this.questions.map((item) => {
-        if (item.id === id) {
-          return {
-            id: id,
-            content: value,
-          };
-        }
-        return item;
-      });
+      this.$emit(
+        "update:questions",
+        this.questions.map((item) => {
+          if (item.id === id) {
+            return {
+              id: id,
+              content: value,
+            };
+          }
+          return item;
+        })
+      );
     },
     onChangeAnswer(value, id) {
-      this.answers = this.answers.map((item) => {
-        if (item.id === id) {
-          return {
-            id: id,
-            content: value,
-          };
-        }
-        return item;
-      });
+      this.$emit(
+        "update:answers",
+        this.answers.map((item) => {
+          if (item.id === id) {
+            return {
+              id: id,
+              content: value,
+            };
+          }
+          return item;
+        })
+      );
     },
     onAddAnswer() {
-      this.answers = [
+      this.$emit("update:answers", [
         ...this.answers,
         {
           id: String.fromCharCode(this.answers.length + CODE_CHAR_START),
           content: "",
         },
-      ];
+      ]);
     },
     onAddQuestion() {
-      this.questions = [
+      this.$emit("update:questions", [
         ...this.questions,
         {
           id: this.questions.length + 1,
           content: "",
         },
-      ];
-      this.correctAnswers = {
+      ]);
+      this.$emit("update:correctAnswers", {
         ...this.correctAnswers,
         [this.questions.length]: [],
-      };
+      });
     },
     getChecked(questionId, answerId) {
       return (this.correctAnswers[questionId] || []).includes(answerId);
     },
     onCheck(questionId, answerId) {
+      let newCorrectAnswers = { ...this.correctAnswers };
       if (this.correctAnswers[questionId].includes(answerId)) {
-        this.correctAnswers = {
+        newCorrectAnswers = {
           ...this.correctAnswers,
           [questionId]: this.correctAnswers[questionId].filter(
             (item) => item !== answerId
           ),
         };
       } else {
-        this.correctAnswers = {
+        newCorrectAnswers = {
           ...this.correctAnswers,
           [questionId]: [...this.correctAnswers[questionId], answerId],
         };
       }
+      this.$emit("update:correctAnswers", newCorrectAnswers);
     },
   },
 };

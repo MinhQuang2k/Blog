@@ -21,12 +21,41 @@
     </div>
     <div class="d-flex g-4">
       <div class="df-4">
-        <Setting />
+        <Setting :tagId.sync="tagId" :score.sync="score" />
       </div>
       <div class="df-8">
-        <component :is="componentQuestion"></component>
-        <component :is="componentAnswer"></component>
-        <Note />
+        <!-- Question -->
+        <Question
+          v-if="questionType !== QUESTION_TYPE.FILLBLANK"
+          :content.sync="content"
+        />
+        <QuestionFillBlank
+          v-else
+          :content.sync="content"
+          :correctAnswers.sync="fillBlankCorrectAnswers"
+        />
+        <!-- Answer -->
+        <AnswerMuliti
+          v-if="questionType === QUESTION_TYPE.MULITI"
+          :answers.sync="answersMuliti"
+          :correctAnswers.sync="correctAnswersMuliti"
+        />
+        <AnswerBoolean
+          v-else-if="questionType === QUESTION_TYPE.BOOLEAN"
+          :answers.sync="answersBoolean"
+          :correctAnswer.sync="correctAnswerBoolean"
+        />
+        <AnswerMatch
+          v-else-if="questionType === QUESTION_TYPE.MATCH"
+          :questions.sync="matchingQuestions"
+          :answers.sync="matchingAnswers"
+          :correctAnswers.sync="matchingCorrectAnswers"
+        />
+        <AnswerFillBlank
+          v-else
+          :correctAnswers.sync="fillBlankCorrectAnswers"
+        />
+        <Note :noteAnswer.sync="noteAnswer" />
       </div>
     </div>
   </div>
@@ -58,49 +87,31 @@ export default {
   data() {
     return {
       QUESTION_TYPE,
-      componentQuestion: Question,
-      componentAnswer: AnswerMuliti,
     };
   },
   computed: {
     ...mapFields("question", {
+      tagId: "tagId",
+      score: "score",
+      noteAnswer: "noteAnswer",
       questionType: "questionType",
+      content: "content",
+      answersMuliti: "answersMuliti",
+      correctAnswersMuliti: "correctAnswersMuliti",
+      answersBoolean: "answersBoolean",
+      correctAnswerBoolean: "correctAnswerBoolean",
+      matchingQuestions: "matchingAnswers.questions",
+      matchingAnswers: "matchingAnswers.answers",
+      matchingCorrectAnswers: "matchingCorrectAnswers",
+      fillBlankCorrectAnswers: "fillBlankCorrectAnswers",
     }),
   },
-  mounted() {
-    this.setQuestionComponent();
-  },
   methods: {
-    setQuestionComponent() {
-      switch (this.questionType) {
-        case this.QUESTION_TYPE.MULITI:
-          this.componentQuestion = Question;
-          this.componentAnswer = AnswerMuliti;
-          break;
-        case this.QUESTION_TYPE.BOOLEAN:
-          this.componentQuestion = Question;
-          this.componentAnswer = AnswerBoolean;
-          break;
-        case this.QUESTION_TYPE.MATCH:
-          this.componentQuestion = Question;
-          this.componentAnswer = AnswerMatch;
-          break;
-        case this.QUESTION_TYPE.FILLBLANK:
-          this.componentQuestion = QuestionFillBlank;
-          this.componentAnswer = AnswerFillBlank;
-          break;
-      }
-    },
     goBack() {
       this.$router.back();
     },
     onAdd() {},
     onUpdate() {},
-  },
-  watch: {
-    questionType() {
-      this.setQuestionComponent();
-    },
   },
 };
 </script>

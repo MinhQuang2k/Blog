@@ -8,7 +8,7 @@
       </div>
     </div>
     <div v-else>
-      <TinyMCE :value.sync="content" @change="onChange" type="big" />
+      <TinyMCE :value="content" @change="onChange" type="big" />
       <p>
         <b>Hướng dẫn</b> Để tạo chỗ trống tại vị trí con trỏ chuột của bạn, hãy
         nhập theo định dạng sau [%Tên_chỗ_trống%]. Tên chỗ trống chỉ nhập số,
@@ -27,14 +27,17 @@
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
 export default {
   name: "QuestionFillBlank",
-  computed: {
-    ...mapFields("question", {
-      content: "content",
-      correctAnswers: "fillBlankCorrectAnswers",
-    }),
+  props: {
+    content: {
+      type: String,
+      default: "",
+    },
+    correctAnswers: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {

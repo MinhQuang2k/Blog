@@ -1,7 +1,11 @@
 <template>
   <div class="box-white mb-4">
     <h4>Đáp án</h4>
-    <a-checkbox-group v-model="correctAnswers" class="wr-100">
+    <a-checkbox-group
+      :value="correctAnswers"
+      @change="onChangeResult"
+      class="wr-100"
+    >
       <div
         v-for="item in answers"
         :key="item.id"
@@ -10,8 +14,8 @@
         <a-checkbox :value="item.id" class="mr-3"></a-checkbox>
         <div class="mr-3">{{ upperCaseAnswer(item.id) }}</div>
         <TinyMCE
-          :value.sync="item.content"
-          @change="onChange($event, item.id)"
+          :value="item.content"
+          @change="onChangeAnswer($event, item.id)"
         />
         <a-button
           type="link"
@@ -31,7 +35,6 @@
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
 import { CODE_CHAR_START } from "~/constants/question";
 import TinyMCE from "@/components/global/TinyMCE";
@@ -44,48 +47,64 @@ export default {
       CODE_CHAR_START,
     };
   },
-  computed: {
-    ...mapFields("question", {
-      answers: "answersMuliti",
-      correctAnswers: "correctAnswersMuliti",
-    }),
+  props: {
+    answers: {
+      type: Array,
+      default: () => [],
+    },
+    correctAnswers: {
+      type: Array,
+      default: () => [],
+    },
   },
   methods: {
-    onChange(value, id) {
-      this.answers = this.answers.map((item) => {
-        if (item.id === id) {
-          return {
-            id: id,
-            content: value,
-          };
-        }
-        return item;
-      });
+    onChangeResult(value) {
+      this.$emit("update:correctAnswers", value);
     },
-    onDelete(id) {
-      this.correctAnswers = this.correctAnswers
-        .filter((item) => item !== id)
-        .map((item) => {
-          if (item.charCodeAt(0) > id.charCodeAt(0)) {
-            return String.fromCharCode(item.charCodeAt(0) - 1);
+    onChangeAnswer(value, id) {
+      this.$emit(
+        "update:answers",
+        this.answers.map((item) => {
+          if (item.id === id) {
+            return {
+              id: id,
+              content: value,
+            };
           }
           return item;
-        });
-      this.answers = this.answers
-        .filter((item) => item.id != id)
-        .map((item, index) => ({
-          ...item,
-          id: String.fromCharCode(index + CODE_CHAR_START),
-        }));
+        })
+      );
+    },
+    onDelete(id) {
+      this.$emit(
+        "update:correctAnswers",
+        this.correctAnswers
+          .filter((item) => item !== id)
+          .map((item) => {
+            if (item.charCodeAt(0) > id.charCodeAt(0)) {
+              return String.fromCharCode(item.charCodeAt(0) - 1);
+            }
+            return item;
+          })
+      );
+      this.$emit(
+        "update:answers",
+        this.answers
+          .filter((item) => item.id != id)
+          .map((item, index) => ({
+            ...item,
+            id: String.fromCharCode(index + CODE_CHAR_START),
+          }))
+      );
     },
     onAdd() {
-      this.answers = [
+      this.$emit("update:answers", [
         ...this.answers,
         {
           id: String.fromCharCode(this.answers.length + CODE_CHAR_START),
           content: "",
         },
-      ];
+      ]);
     },
   },
 };

@@ -3,7 +3,13 @@
     <h4>Cài đặt</h4>
     <div class="mb-4">
       <h4>Điểm</h4>
-      <a-input-number class="wr-100" v-model="score" :min="0" :max="100" />
+      <a-input-number
+        class="wr-100"
+        :value="score"
+        @change="onChangeScore"
+        :min="0"
+        :max="100"
+      />
     </div>
     <div class="mb-4">
       <h4>Nhóm câu hỏi</h4>
@@ -13,7 +19,8 @@
         option-filter-prop="children"
         class="wr-100"
         :filter-option="filterOption"
-        v-model="tagId"
+        :value="tagId"
+        @change="onChangeTag"
       >
         <a-select-option
           v-for="item in questionTags"
@@ -30,10 +37,19 @@
 <script>
 import generate from "~/mixins/generate";
 import { mapActions } from "vuex";
-import { mapFields } from "vuex-map-fields";
 export default {
   name: "Setting",
   mixins: [generate],
+  props: {
+    tagId: {
+      type: Number,
+      default: null,
+    },
+    score: {
+      type: Number | String,
+      default: 0,
+    },
+  },
   data() {
     return {
       questionTags: [],
@@ -42,17 +58,17 @@ export default {
   mounted() {
     this.getListQuestionTag();
   },
-  computed: {
-    ...mapFields("question", {
-      tagId: "tagId",
-      score: "score",
-    }),
-  },
   methods: {
     ...mapActions("questionTag", ["getAll"]),
     async getListQuestionTag() {
       const response = await this.getAll();
       this.questionTags = response?.data?.data || [];
+    },
+    onChangeScore(value) {
+      this.$emit("update:score", value);
+    },
+    onChangeTag(value) {
+      this.$emit("update:tagId", value);
     },
   },
 };

@@ -25,6 +25,11 @@ export default {
         href: "//fonts.googleapis.com/css?family=Roboto:300,400,500",
       },
     ],
+    script: [
+      {
+        src: "//unpkg.com/tinymce@5.1.1/tinymce.js",
+      },
+    ],
   },
 
   // Global CSS
@@ -35,6 +40,7 @@ export default {
     "~/plugins/axios.js",
     { src: "~/plugins/mask", ssr: false },
     { src: "~/plugins/tinymce", mode: "client" },
+    { src: "~/plugins/vuelidate.js", mode: "client" },
     // { src: "~/plugins/vuex-persist.js", ssr: false },
   ],
 

@@ -26,29 +26,32 @@
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
 import generate from "~/mixins/generate";
 import TinyMCE from "@/components/global/TinyMCE";
 export default {
   name: "AnswerFillBlank",
   mixins: [generate],
   components: [TinyMCE],
-  computed: {
-    ...mapFields("question", {
-      correctAnswers: "fillBlankCorrectAnswers",
-    }),
+  props: {
+    correctAnswers: {
+      type: Array,
+      default: () => [],
+    },
   },
   methods: {
     onChange(event, key) {
-      this.correctAnswers = this.correctAnswers.map((item) => {
-        if (item.key === key) {
-          return {
-            key: key,
-            content: event.target.value,
-          };
-        }
-        return item;
-      });
+      this.$emit(
+        "update:correctAnswers",
+        this.correctAnswers.map((item) => {
+          if (item.key === key) {
+            return {
+              key: key,
+              content: event.target.value,
+            };
+          }
+          return item;
+        })
+      );
     },
   },
 };
