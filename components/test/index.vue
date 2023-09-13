@@ -7,7 +7,11 @@
           <a-icon type="search" class="icon-search" />
         </a-col>
         <a-col :span="5" class="pl-4">
-          <a-select class="select" default-value="lucy" @change="selectSubject">
+          <a-select
+            class="select"
+            default-value="lucy"
+            @change="onSelectSubject"
+          >
             <a-select-opt-group>
               <span slot="label"><a-icon type="user" />Manager</span>
               <a-select-option value="jack"> Jack </a-select-option>
@@ -19,13 +23,13 @@
           </a-select>
         </a-col>
         <a-col :span="5" class="pl-4">
-          <a-select class="select" default-value="new" @change="selectSort">
+          <a-select class="select" default-value="new" @change="onSelectSort">
             <a-select-option value="new"> Tạo gần đây </a-select-option>
             <a-select-option value="order"> A-Z </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="4" :offset="2" class="d-flex justify-content-end"
-          ><a-button type="primary" @click="openModal"
+          ><a-button type="primary" @click="onOpenModal"
             >Tạo đề thi</a-button
           ></a-col
         >
@@ -79,15 +83,28 @@
               </p>
             </a-col>
             <a-col>
-              <a-button type="link"> Sao chép liên kết</a-button>
-              <a-button type="link"> Cài đặt</a-button>
-              <a-button type="primary"> Xem kết quả</a-button>
+              <a-button
+                type="link"
+                @click="
+                  copyText(
+                    'https://e.testcenter.vn/t/cU5_UH8OJFAOM1RcRyYED0F4SHIX'
+                  )
+                "
+              >
+                Sao chép liên kết</a-button
+              >
+              <a-button type="link" @click="onSettingRoom(1)">
+                Cài đặt</a-button
+              >
+              <a-button type="primary" @click="onShowResult">
+                Xem kết quả</a-button
+              >
             </a-col>
           </a-row>
         </div>
         <div class="box-white">
           <h4>Chưa có đợt thi tuyển nào được tạo ra từ đề thi này</h4>
-          <a-button type="primary">Tạo đợt thi</a-button>
+          <a-button type="primary" @click="onAddRoom">Tạo đợt thi</a-button>
         </div>
       </a-collapse-panel>
     </a-collapse>
@@ -96,8 +113,7 @@
 
 <script>
 export default {
-  name: "test",
-
+  name: "Test",
   data() {
     return {
       current: 2,
@@ -105,17 +121,21 @@ export default {
     };
   },
   methods: {
-    selectSubject(value) {
+    onSelectSubject(value) {
       console.log(`selected ${value}`);
     },
-    selectSort(value) {
+    onSelectSort(value) {
       console.log(`selected ${value}`);
     },
-    openModal() {
+    onOpenModal() {
       this.visible = true;
     },
-    closeModal() {
+    onCloseModal() {
       this.visible = false;
+    },
+    onShowResult() {},
+    onSettingRoom(roomID) {
+      this.$router.push(`rooms/${roomID}/edit`);
     },
   },
 };

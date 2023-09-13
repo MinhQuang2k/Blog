@@ -33,6 +33,7 @@ export default {
   plugins: [
     "@/plugins/antd-ui",
     "~/plugins/axios.js",
+    "~/plugins/tinymce.js",
     { src: "~/plugins/mask", ssr: false },
     { src: "~/plugins/vuelidate.js", mode: "client" },
     // { src: "~/plugins/vuex-persist.js", ssr: false },

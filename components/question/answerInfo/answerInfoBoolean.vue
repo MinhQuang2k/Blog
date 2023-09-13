@@ -1,11 +1,58 @@
-<template></template>
+<template>
+  <div>
+    <h4>Đáp án</h4>
+    <div
+      v-for="item in answers"
+      :key="item.id"
+      class="d-flex align-items-center"
+      :class="{ 'c-green': onCheck(item.id) }"
+    >
+      <div class="w-20">
+        <a-icon
+          v-if="onCheck(item.id)"
+          type="check-circle"
+          class="align-middle"
+        />
+      </div>
+      <div>
+        {{ upperCaseAnswer(item.id)
+        }}<span class="ml-3" v-html="item.content"></span>
+      </div>
+    </div>
+    <!-- <div class="d-flex c-red">
+      <div class="w-20">
+        <a-icon type="close-circle" class="align-middle" />
+      </div>
+      <div>B)<span class="ml-3">1</span></div>
+    </div> -->
+  </div>
+</template>
 
 <script>
+import generate from "@/mixins/generate";
 export default {
-  name: "",
-  data() {
-    return {};
+  name: "AnswerInfoBoolean",
+  mixins: [generate],
+  props: {
+    answers: {
+      type: Array,
+      default: () => [
+        { id: "a", content: "1" },
+        { id: "b", content: "2" },
+      ],
+    },
+    correctAnswer: {
+      type: String,
+      default: "a",
+    },
   },
-  methods: {},
+  mounted() {
+    console.log("answers", this.answers);
+  },
+  methods: {
+    onCheck(answer) {
+      return answer === this.correctAnswer;
+    },
+  },
 };
 </script>

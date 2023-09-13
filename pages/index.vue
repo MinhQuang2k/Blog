@@ -14,8 +14,11 @@
       />
     </div>
     <Question />
+
     <a-button @click="onSubmit">onSubmit</a-button>
     <a-button @click="onReset">onReset</a-button>
+    <a-button @click="copyText">copyText</a-button>
+
     <!-- <div class="d-flex justify-content-between w-200">
       <div>
         <div ref="start_1" class="dot_green my-5">1</div>

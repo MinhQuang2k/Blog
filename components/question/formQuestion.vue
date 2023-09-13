@@ -72,8 +72,10 @@ import AnswerBoolean from "./answer/answerBoolean.vue";
 import AnswerMatch from "./answer/answerMatch.vue";
 import AnswerFillBlank from "./answer/answerFillBlank.vue";
 import { mapFields } from "vuex-map-fields";
+import generate from "@/mixins/generate";
 export default {
   name: "bankCreate",
+  mixins: [generate],
   components: {
     Setting,
     Question,
@@ -107,11 +109,18 @@ export default {
     }),
   },
   methods: {
-    goBack() {
-      this.$router.back();
+    onAdd() {
+      this.goBack();
+      this.$notification["success"]({
+        message: "Tạo thành công",
+      });
     },
-    onAdd() {},
-    onUpdate() {},
+    onUpdate() {
+      this.goBack();
+      this.$notification["success"]({
+        message: "Cập nhật thành công",
+      });
+    },
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-tinymce
+  <Editor
     api-key="b3m4owtz9mxa6zl1otn948snen4m5np54rm3w5s6a5zny4kz"
     cloudChannel="5-stable"
     :value="value"
@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     onChange(val) {
-      console.log("onChange", onChange);
       this.$emit("change", val);
     },
   },

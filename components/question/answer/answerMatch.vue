@@ -14,7 +14,10 @@
             :value="item.content"
             @change="onChangeQuestion($event, item.id)"
           />
-          <a-button type="link" @click="onDeleteQuestion(item.id)"
+          <a-button
+            type="link"
+            @click="onDeleteQuestion(item.id)"
+            :disabled="questions.length <= 1"
             ><a-icon type="close-circle"
           /></a-button>
         </div>
@@ -34,7 +37,10 @@
             :value="item.content"
             @change="onChangeAnswer($event, item.id)"
           />
-          <a-button type="link" @click="onDeleteAnswer(item.id)"
+          <a-button
+            type="link"
+            @click="onDeleteAnswer(item.id)"
+            :disabled="answers.length <= 1"
             ><a-icon type="close-circle"
           /></a-button>
         </div>
@@ -99,7 +105,7 @@ export default {
   },
   methods: {
     onDeleteAnswer(id) {
-      let newCorrectAnswers = { ...this.correctAnswers };
+      let newCorrectAnswers = JSON.parse(JSON.stringify(this.correctAnswers));
       for (let i = 1; i <= this.questions.length; i++) {
         newCorrectAnswers[i] = newCorrectAnswers[i]
           .filter((item) => item !== id)
@@ -122,7 +128,7 @@ export default {
       );
     },
     onDeleteQuestion(id) {
-      let newCorrectAnswers = { ...this.correctAnswers };
+      let newCorrectAnswers = JSON.parse(JSON.stringify(this.correctAnswers));
       for (let i = id; i < this.questions.length; i++) {
         newCorrectAnswers[i] = newCorrectAnswers[i + 1];
       }
@@ -192,8 +198,11 @@ export default {
       return (this.correctAnswers[questionId] || []).includes(answerId);
     },
     onCheck(questionId, answerId) {
-      let newCorrectAnswers = { ...this.correctAnswers };
-      if (this.correctAnswers[questionId].includes(answerId)) {
+      let newCorrectAnswers = JSON.parse(JSON.stringify(this.correctAnswers));
+      if (
+        this.correctAnswers[questionId] &&
+        this.correctAnswers[questionId].includes(answerId)
+      ) {
         newCorrectAnswers = {
           ...this.correctAnswers,
           [questionId]: this.correctAnswers[questionId].filter(

@@ -2,8 +2,8 @@
   <div class="box-white mb-4">
     <h4>Câu hỏi</h4>
     <div v-if="isShowQuestion" class="d-flex justify-content-between">
-      <div v-html="convertToHTML(content)"></div>
-      <div class="text-right wr-100">
+      <div class="df-1" v-html="convertToHTML(content)"></div>
+      <div class="text-right">
         <a-button type="link" @click="onEdit"><a-icon type="edit" /></a-button>
       </div>
     </div>
@@ -27,8 +27,10 @@
 </template>
 
 <script>
+import generate from "@/mixins/generate";
 export default {
   name: "QuestionFillBlank",
+  mixins: [generate],
   props: {
     content: {
       type: String,
@@ -53,16 +55,23 @@ export default {
   },
   methods: {
     onSave() {
-      this.isShowQuestion = true;
       var regex = /\[(.*?)\]/g;
       var matches = this.content.match(regex) || [];
-      this.correctAnswers = this.correctAnswers.filter(
+      if (!matches.length) {
+        this.$notification["error"]({
+          message: "Lỗi không tìm thấy đáp án nào",
+        });
+        return;
+      } else {
+        this.isShowQuestion = true;
+      }
+      let newCorrectAnswers = this.correctAnswers.filter(
         (item) => item.key <= matches.length
       );
       for (var i = 1; i <= matches.length; i++) {
-        if (!this.correctAnswers.find((item) => item.key === i)) {
-          this.correctAnswers = [
-            ...this.correctAnswers,
+        if (!newCorrectAnswers.find((item) => item.key === i)) {
+          newCorrectAnswers = [
+            ...newCorrectAnswers,
             {
               key: i,
               content: [""],
@@ -70,23 +79,13 @@ export default {
           ];
         }
       }
+      this.$emit("update:correctAnswers", newCorrectAnswers);
     },
     onEdit() {
       this.isShowQuestion = false;
     },
-    convertToHTML(input = "") {
-      var regex = /\[(.*?)\]/g;
-      var matches = input.match(regex) || [];
-
-      for (var i = 0; i < matches.length; i++) {
-        var replacement =
-          "<b>" + matches[i].replace("[%", "_").replace("%]", "_") + "</b>";
-        input = input.replace(matches[i], replacement);
-      }
-      return input;
-    },
     onChange(value) {
-      this.content = value;
+      this.$emit("update:content", value);
     },
   },
 };
