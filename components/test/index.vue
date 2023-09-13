@@ -68,9 +68,14 @@
               </div>
             </a-col>
             <a-col
-              ><a-button type="link"> <a-icon type="edit" /></a-button>
-              <a-button type="link"><a-icon type="form" /></a-button>
-              <a-button type="link"> <a-icon type="delete" /></a-button
+              ><a-button type="link" @click.stop="onEditTest(1)">
+                <a-icon type="edit"
+              /></a-button>
+              <a-button type="link" @click.stop="onAddRoom"
+                ><a-icon type="form"
+              /></a-button>
+              <a-button type="link" @click.stop="onDeleteTest(1)">
+                <a-icon type="delete" /></a-button
             ></a-col>
           </a-row>
         </template>
@@ -108,16 +113,23 @@
         </div>
       </a-collapse-panel>
     </a-collapse>
+    <ModalAdd :isShow.sync="isShowModal" @onSave="onAdd" />
   </div>
 </template>
 
 <script>
+import generate from "@/mixins/generate";
+import ModalAdd from "./modal/modalAdd.vue";
 export default {
   name: "Test",
+  mixins: [generate],
+  components: {
+    ModalAdd: ModalAdd,
+  },
   data() {
     return {
       current: 2,
-      visible: false,
+      isShowModal: false,
     };
   },
   methods: {
@@ -128,15 +140,20 @@ export default {
       console.log(`selected ${value}`);
     },
     onOpenModal() {
-      this.visible = true;
-    },
-    onCloseModal() {
-      this.visible = false;
+      this.isShowModal = true;
     },
     onShowResult() {},
     onSettingRoom(roomID) {
       this.$router.push(`rooms/${roomID}/edit`);
     },
+    onEditTest(roomID) {
+      this.$router.push(`tests/${roomID}/edit`);
+    },
+    onAddRoom() {
+      this.$router.push(`rooms/create/step-0`);
+    },
+    onDeleteTest(testID) {},
+    onAdd(data) {},
   },
 };
 </script>

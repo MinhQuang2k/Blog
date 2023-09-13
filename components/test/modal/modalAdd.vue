@@ -2,8 +2,8 @@
   <a-modal
     title="Tạo đề thi"
     :visible="visible"
-    @ok="closeModal"
-    @cancel="closeModal"
+    @ok="onSave"
+    @cancel="onClose"
     cancelText="Hủy"
     okText="Create"
   >
@@ -52,10 +52,37 @@
 
 <script>
 export default {
-  name: "",
-  data() {
-    return {};
+  name: "ModalAdd",
+  props: {
+    isShow: {
+      type: Boolean,
+      default: false,
+    },
   },
-  methods: {},
+  data() {
+    return {
+      visible: false,
+      name: "",
+    };
+  },
+  watch: {
+    isShow(val) {
+      console.log("ok");
+      this.visible = val;
+    },
+  },
+  methods: {
+    onClose() {
+      this.onReset();
+      this.$emit("update:isShow", false);
+    },
+    onSave() {
+      this.$emit("onSave", { name: this.name });
+      this.onClose();
+    },
+    onReset() {
+      this.name = "";
+    },
+  },
 };
 </script>
