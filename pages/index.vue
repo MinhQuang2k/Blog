@@ -4,7 +4,7 @@
       <span
         class="c-tooltip-error"
         :class="{ 'is-show': this.$v.note.$dirty && this.$v.note.$error }"
-        >Lỗi không tồn tại
+        >Trường thông tin không được để trống
       </span>
       <a-input
         :class="{

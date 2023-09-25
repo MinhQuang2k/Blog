@@ -1,13 +1,16 @@
 <template>
-  <Editor
-    api-key="b3m4owtz9mxa6zl1otn948snen4m5np54rm3w5s6a5zny4kz"
-    cloudChannel="5-stable"
-    :value="value"
-    @input="onChange"
-    :inline="true"
-    :class="type"
-    :init="config"
-  />
+  <div class="wr-100" :class="clazz">
+    <Editor
+      api-key="b3m4owtz9mxa6zl1otn948snen4m5np54rm3w5s6a5zny4kz"
+      cloudChannel="5-stable"
+      :value="value"
+      @input="onChange"
+      :inline="true"
+      class="d-flex"
+      :class="[type]"
+      :init="config"
+    />
+  </div>
 </template>
 
 <script>
@@ -21,7 +24,7 @@ export default {
       type: String,
       default: "small",
     },
-    placeholder: {
+    clazz: {
       type: String,
       default: "",
     },

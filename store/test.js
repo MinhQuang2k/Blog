@@ -1,11 +1,9 @@
-// sort_by: recent;
-// sort_by: alphabet;
 import { getField, updateField } from "vuex-map-fields";
 
 export const state = () => ({
   list: [],
   pagination: {
-    currentpage: 1,
+    currentPage: 1,
     total: 1,
     limit: 20,
   },
@@ -13,27 +11,30 @@ export const state = () => ({
 
 export const actions = {
   getPaging({}, params) {
-    return this.$axios.get(`/api/group-questions`, { params });
+    return this.$axios.get(`/api/exams`, { params });
   },
   create({}, params) {
-    return this.$axios.post("/api/group-questions", params);
+    return this.$axios.post("/api/exams", params);
   },
   update({}, params) {
     const { id, payload } = params;
-    return this.$axios.put(`/api/group-questions/${id}`, payload);
+    return this.$axios.put(`/api/exams/${id}`, payload);
   },
   delete({}, params) {
     const id = params.id;
-    return this.$axios.delete(`/api/group-questions/${id}`);
+    return this.$axios.delete(`/api/exams/${id}`);
   },
-  setPagination({ commit }) {
-    commit("SET_PAGINATION");
+  getCategory({}) {
+    return this.$axios.get("/api/categories/all");
+  },
+  setPagination({ commit }, params) {
+    commit("SET_PAGINATION", params);
   },
 };
 export const mutations = {
   updateField,
   SET_PAGINATION(state, payload) {
-    state.pagination.current_page = payload.current_page;
+    state.pagination.currentPage = payload.current_page;
     state.pagination.total = payload.total;
     state.pagination.limit = payload.limit;
   },

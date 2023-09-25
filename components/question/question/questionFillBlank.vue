@@ -8,7 +8,22 @@
       </div>
     </div>
     <div v-else>
-      <TinyMCE :value="content" @change="onChange" type="big" />
+      <div class="c-form-item">
+        <span
+          class="c-tooltip-error"
+          :class="{ 'is-show': $v.content.$dirty && $v.content.$error }"
+          >Trường thông tin không được để trống
+        </span>
+        <TinyMCE
+          :value="content"
+          @change="onChange"
+          type="big"
+          :clazz="
+            $v.content.$dirty && $v.content.$error ? 'is-error-wrapper' : ''
+          "
+        />
+      </div>
+
       <p>
         <b>Hướng dẫn</b> Để tạo chỗ trống tại vị trí con trỏ chuột của bạn, hãy
         nhập theo định dạng sau [%Tên_chỗ_trống%]. Tên chỗ trống chỉ nhập số,
@@ -41,6 +56,7 @@ export default {
       default: () => [],
     },
   },
+  inject: ["$v"],
   data() {
     return {
       isShowQuestion: true,
@@ -74,7 +90,7 @@ export default {
             ...newCorrectAnswers,
             {
               key: i,
-              content: [""],
+              content: "",
             },
           ];
         }

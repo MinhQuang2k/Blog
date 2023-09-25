@@ -5,18 +5,26 @@
       <div class="df-1">
         <h4 class="text-center">Cột 1</h4>
         <div
-          v-for="item in questions"
-          :key="item.id"
+          v-for="v in $v.matchingQuestions.$each.$iter"
+          :key="v.$model.id"
           class="d-flex align-items-center my-3"
         >
-          <div class="mr-3">{{ item.id }}.</div>
-          <TinyMCE
-            :value="item.content"
-            @change="onChangeQuestion($event, item.id)"
-          />
+          <div class="mr-3">{{ v.$model.id }}.</div>
+          <div class="c-form-item">
+            <span
+              class="c-tooltip-error"
+              :class="{ 'is-show': v.$dirty && v.$error }"
+              >Trường thông tin không được để trống
+            </span>
+            <TinyMCE
+              :value="v.$model.content"
+              @change="onChangeQuestion($event, v.$model.id)"
+              :clazz="v.$dirty && v.$error ? 'is-error-wrapper' : ''"
+            />
+          </div>
           <a-button
             type="link"
-            @click="onDeleteQuestion(item.id)"
+            @click="onDeleteQuestion(v.$model.id)"
             :disabled="questions.length <= 1"
             ><a-icon type="close-circle"
           /></a-button>
@@ -28,18 +36,26 @@
       <div class="df-1">
         <h4 class="text-center">Cột 2</h4>
         <div
-          v-for="item in answers"
-          :key="item.id"
+          v-for="v in $v.matchingAnswers.$each.$iter"
+          :key="v.$model.id"
           class="d-flex align-items-center my-3"
         >
-          <div class="mr-3">{{ upperCase(item.id) }}.</div>
-          <TinyMCE
-            :value="item.content"
-            @change="onChangeAnswer($event, item.id)"
-          />
+          <div class="mr-3">{{ upperCase(v.$model.id) }}.</div>
+          <div class="c-form-item">
+            <span
+              class="c-tooltip-error"
+              :class="{ 'is-show': v.$dirty && v.$error }"
+              >Trường thông tin không được để trống
+            </span>
+            <TinyMCE
+              :value="v.$model.content"
+              @change="onChangeAnswer($event, v.$model.id)"
+              :clazz="v.$dirty && v.$error ? 'is-error-wrapper' : ''"
+            />
+          </div>
           <a-button
             type="link"
-            @click="onDeleteAnswer(item.id)"
+            @click="onDeleteAnswer(v.$model.id)"
             :disabled="answers.length <= 1"
             ><a-icon type="close-circle"
           /></a-button>
@@ -98,6 +114,7 @@ export default {
       default: () => {},
     },
   },
+  inject: ["$v"],
   data() {
     return {
       CODE_CHAR_START,
@@ -210,9 +227,10 @@ export default {
           ),
         };
       } else {
+        let listCorrectAnswer = this.correctAnswers[questionId] || [];
         newCorrectAnswers = {
           ...this.correctAnswers,
-          [questionId]: [...this.correctAnswers[questionId], answerId],
+          [questionId]: [...listCorrectAnswer, answerId],
         };
       }
       this.$emit("update:correctAnswers", newCorrectAnswers);

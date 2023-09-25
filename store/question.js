@@ -1,44 +1,6 @@
 import { getField, updateField } from "vuex-map-fields";
 import { QUESTION_TYPE } from "~/constants/question.js";
 
-const stateEdit = {
-  questionType: QUESTION_TYPE.MULITI,
-  tagId: null,
-  score: 0,
-  content: "",
-  answersMuliti: [
-    { id: "a", content: "1" },
-    { id: "b", content: "2" },
-    { id: "c", content: "123" },
-    { id: "d", content: "323" },
-    { id: "e", content: "12" },
-  ],
-  answersBoolean: [
-    { id: "a", content: "1" },
-    { id: "b", content: "2" },
-  ],
-  correctAnswersMuliti: ["a", "b"],
-  correctAnswerBoolean: "a",
-  hasMulCorrectAnswers: true,
-  noteAnswer: "",
-  matchingAnswers: {
-    questions: [
-      { id: 1, content: "<p>1</p>" },
-      { id: 2, content: "<p>2</p>" },
-      { id: 3, content: "<p>f</p>" },
-    ],
-    answers: [
-      { id: "a", content: "<p>1</p>" },
-      { id: "b", content: "<p>2</p>" },
-    ],
-  },
-  matchingCorrectAnswers: { 1: ["a"], 2: ["b"], 3: ["a"] },
-  fillBlankCorrectAnswers: [
-    { key: 1, content: ["son"] },
-    { key: 2, content: ["Nghia me"] },
-  ],
-};
-
 const INIT_STATE = {
   questionType: QUESTION_TYPE.MULITI,
   tagId: null,
@@ -76,41 +38,41 @@ function getConvertParam(state) {
     case QUESTION_TYPE.MULITI:
       return {
         type: state.questionType,
-        tagId: state.tagId,
+        group_question_id: state.tagId,
         score: state.score,
         content: state.content,
-        answers: state.answersMuliti,
-        correctAnswers: state.correctAnswersMuliti,
-        noteAnswer: state.noteAnswer,
+        answer: state.answersMuliti,
+        correct_answer: state.correctAnswersMuliti,
+        note_answer: state.noteAnswer,
       };
     case QUESTION_TYPE.BOOLEAN:
       return {
         type: state.questionType,
-        tagId: state.tagId,
+        group_question_id: state.tagId,
         score: state.score,
         content: state.content,
-        answers: state.answersBoolean,
-        correctAnswers: state.correctAnswerBoolean,
-        noteAnswer: state.noteAnswer,
+        answer: state.answersBoolean,
+        correct_answer: state.correctAnswerBoolean,
+        note_answer: state.noteAnswer,
       };
     case QUESTION_TYPE.MATCH:
       return {
         type: state.questionType,
-        tagId: state.tagId,
+        group_question_id: state.tagId,
         score: state.score,
         content: state.content,
-        matchingAnswers: state.matchingAnswers,
-        matchingCorrectAnswers: state.matchingCorrectAnswers,
-        noteAnswer: state.noteAnswer,
+        matching_answer: state.matchingAnswers,
+        matching_correct: state.matchingCorrectAnswers,
+        note_answer: state.noteAnswer,
       };
     case QUESTION_TYPE.FILLBLANK:
       return {
         type: state.questionType,
-        tagId: state.tagId,
+        group_question_id: state.tagId,
         score: state.score,
         content: state.content,
-        fillBlankCorrectAnswers: state.fillBlankCorrectAnswers,
-        noteAnswer: state.noteAnswer,
+        fill_blank_correct_answer: state.fillBlankCorrectAnswers,
+        note_answer: state.noteAnswer,
       };
   }
 }
@@ -120,40 +82,40 @@ function getFormatParam(data) {
     case QUESTION_TYPE.MULITI:
       return {
         questionType: data.type,
-        tagId: data.tagId,
+        tagId: data.group_question_id,
         score: data.score,
         content: data.content,
-        answersMuliti: data.answers,
-        correctAnswersMuliti: data.correct_answers,
+        answersMuliti: data.answer,
+        correctAnswersMuliti: data.correct_answer,
         noteAnswer: data.note_answer,
       };
     case QUESTION_TYPE.BOOLEAN:
       return {
         questionType: data.type,
-        tagId: data.tagId,
+        tagId: data.group_question_id,
         score: data.score,
         content: data.content,
-        answersBoolean: data.answers,
-        correctAnswerBoolean: data.correct_answers,
+        answersBoolean: data.answer,
+        correctAnswerBoolean: data.correct_answer,
         noteAnswer: data.note_answer,
       };
     case QUESTION_TYPE.MATCH:
       return {
         questionType: data.type,
-        tagId: data.tagId,
+        tagId: data.group_question_id,
         score: data.score,
         content: data.content,
-        matchingAnswers: data.matching_answers,
-        matchingCorrectAnswers: data.matching_correct_answers,
+        matchingAnswers: data.matching_answer,
+        matchingCorrectAnswers: data.matching_correct,
         noteAnswer: data.note_answer,
       };
     case QUESTION_TYPE.FILLBLANK:
       return {
         questionType: data.type,
-        tagId: data.tagId,
+        tagId: data.group_question_id,
         score: data.score,
         content: data.content,
-        fillBlankCorrectAnswers: data.fill_blank_correct_answers,
+        fillBlankCorrectAnswers: data.fill_blank_correct_answer,
         noteAnswer: data.note_answer,
       };
   }
@@ -162,32 +124,36 @@ function getFormatParam(data) {
 export const state = () => JSON.parse(JSON.stringify(INIT_STATE));
 
 export const actions = {
-  async getQuestion({ commit }, params) {
-    try {
-      const response = await this.$axios.get(`/api/group-questions`, {
-        params,
-      });
-      if (response?.data?.status === "success") {
-        commit("SET_QUESTION", response?.data?.data || {});
-      }
-    } catch (error) {
-      console.log(error);
+  async getByID({ commit }, params) {
+    const id = params.id;
+
+    const response = await this.$axios.get(`/api/questions/${id}`);
+    if (response?.data?.code === "SUCCESS") {
+      commit("SET_QUESTION", response?.data?.data || {});
     }
-    return;
   },
   create({ state }) {
-    return this.$axios.post("/api/group-questions", getConvertParam(state));
+    return this.$axios.post("/api/questions", getConvertParam(state));
   },
-  update({}, params) {
-    const { id, payload } = params;
-    return this.$axios.put(
-      `/api/group-questions/${id}`,
-      getConvertParam(state)
-    );
+  update({ state }, params) {
+    const { id } = params;
+    return this.$axios.put(`/api/questions/${id}`, getConvertParam(state));
+  },
+  addQuestionToExam({}, params) {
+    const { testId, questionId } = params;
+    return this.$axios.post(`/api/exams/add/${testId}/${questionId}`);
   },
   delete({}, params) {
     const id = params.id;
-    return this.$axios.delete(`/api/group-questions/${id}`);
+    return this.$axios.delete(`/api/questions/${id}`);
+  },
+  clones({}, params) {
+    const id = params.id;
+    return this.$axios.post(`/api/questions/clones/${id}`);
+  },
+  deleteQuestionToExam({}, params) {
+    const { testId, questionId } = params;
+    return this.$axios.delete(`/api/exams/delete/${testId}/${questionId}`);
   },
   resetState({ commit }) {
     commit("RESET_STATE");

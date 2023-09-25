@@ -3,7 +3,7 @@ import { getField, updateField } from "vuex-map-fields";
 export const state = () => ({
   list: [],
   pagination: {
-    currentpage: 1,
+    currentPage: 1,
     total: 1,
     limit: 20,
   },
@@ -27,14 +27,14 @@ export const actions = {
     const id = params.id;
     return this.$axios.delete(`/api/group-questions/${id}`);
   },
-  setPagination({ commit }) {
-    commit("SET_PAGINATION");
+  setPagination({ commit }, params) {
+    commit("SET_PAGINATION", params);
   },
 };
 export const mutations = {
   updateField,
   SET_PAGINATION(state, payload) {
-    state.pagination.current_page = payload.current_page;
+    state.pagination.currentPage = payload.current_page;
     state.pagination.total = payload.total;
     state.pagination.limit = payload.limit;
   },

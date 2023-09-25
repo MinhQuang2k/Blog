@@ -8,18 +8,28 @@
     </p>
     <div>
       <div
-        v-for="item in correctAnswers"
-        :key="item.key"
+        v-for="v in $v.fillBlankCorrectAnswers.$each.$iter"
+        :key="v.$model.key"
         class="d-flex align-items-center my-3"
       >
         <div class="mr-3">
-          <b>{{ item.key }}.</b>
+          <b>{{ v.$model.key }}.</b>
         </div>
-        <a-input
-          :value="item.content"
-          @input="onChange($event, item.key)"
-          placeholder="Nhập nội dung"
-        />
+        <div class="c-form-item">
+          <span
+            class="c-tooltip-error"
+            :class="{ 'is-show': v.$dirty && v.$error }"
+            >Trường thông tin không được để trống
+          </span>
+          <a-input
+            :value="v.$model.content"
+            @input="onChange($event, v.$model.key)"
+            placeholder="Nhập nội dung"
+            :class="{
+              'is-error': v.$dirty && v.$error,
+            }"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -38,6 +48,7 @@ export default {
       default: () => [],
     },
   },
+  inject: ["$v"],
   methods: {
     onChange(event, key) {
       this.$emit(

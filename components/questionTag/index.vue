@@ -39,7 +39,7 @@
     </div>
     <div class="mt-4 d-flex justify-content-end">
       <a-pagination
-        v-model="pagination.current_page"
+        v-model="pagination.currentPage"
         :total="total"
         :page-size="limit"
         show-less-items
@@ -52,7 +52,7 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import ModalAdd from "./modal/modalAdd.vue";
 export default {
   name: "QuestionTag",

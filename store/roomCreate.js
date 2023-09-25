@@ -1,11 +1,33 @@
 import { getField, updateField } from "vuex-map-fields";
 
 export const state = () => ({
-  list: [],
-  pagination: {
-    currentPage: 1,
-    total: 1,
-    limit: 20,
+  test: {
+    list: [],
+    pagination: {
+      currentPage: 1,
+      total: 1,
+      limit: 20,
+    },
+    testId: null,
+    keyword: "",
+    subId: null,
+  },
+  setting: {
+    score: 0,
+    groupQuestionId: null,
+    timeLimit: "",
+    name,
+    pass_mark,
+    is_require_code,
+    is_require_email,
+    is_require_full_name,
+    is_require_phone,
+    is_require_group,
+    is_require_identify_code,
+    code_room,
+    link_room_exam,
+    status,
+    exam_id,
   },
 });
 

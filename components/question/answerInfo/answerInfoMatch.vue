@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>Đáp án</h4>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-start">
       <table class="table-match">
         <tr>
           <th></th>
@@ -9,7 +9,7 @@
           <th class="text-center">B</th>
         </tr>
         <tr v-for="question in questions" :key="question.id">
-          <th>1</th>
+          <th>{{ question.id }}</th>
           <td v-for="answer in answers" :key="answer.id">
             <a-checkbox
               :readonly="true"
@@ -28,22 +28,15 @@ export default {
   props: {
     questions: {
       type: Array,
-      default: () => [
-        { id: 1, content: "<p>1</p>" },
-        { id: 2, content: "<p>2</p>" },
-        { id: 3, content: "<p>f</p>" },
-      ],
+      default: () => [],
     },
     answers: {
       type: Array,
-      default: () => [
-        { id: "a", content: "<p>1</p>" },
-        { id: "b", content: "<p>2</p>" },
-      ],
+      default: () => [],
     },
     correctAnswers: {
       type: Object,
-      default: () => ({ 1: ["a"], 2: ["b"], 3: ["a"] }),
+      default: () => {},
     },
   },
   methods: {

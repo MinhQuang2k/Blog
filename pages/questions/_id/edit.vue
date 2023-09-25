@@ -1,14 +1,14 @@
 <template>
-  <TestEdit v-if="isLoading" />
+  <FormQuestion v-if="isLoading" />
 </template>
 
 <script>
-import TestEdit from "@/components/test/testEdit";
+import FormQuestion from "@/components/question/formQuestion";
 import { mapActions } from "vuex";
 export default {
   auth: "true",
   components: {
-    TestEdit,
+    FormQuestion,
   },
   data() {
     return {
@@ -16,9 +16,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions("testEdit", ["getByID"]),
+    ...mapActions("question", ["resetState", "getByID"]),
   },
   async mounted() {
+    this.resetState();
     const id = this.$route.params.id;
     if (id) {
       await this.getByID({ id });

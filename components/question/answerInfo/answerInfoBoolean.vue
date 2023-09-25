@@ -4,7 +4,7 @@
     <div
       v-for="item in answers"
       :key="item.id"
-      class="d-flex align-items-center"
+      class="d-flex align-items-start"
       :class="{ 'c-green': onCheck(item.id) }"
     >
       <div class="w-20">
@@ -14,9 +14,9 @@
           class="align-middle"
         />
       </div>
-      <div>
-        {{ upperCaseAnswer(item.id)
-        }}<span class="ml-3" v-html="item.content"></span>
+      <div class="d-flex">
+        <div>{{ upperCaseAnswer(item.id) }}</div>
+        <div class="ml-3" v-html="item.content"></div>
       </div>
     </div>
     <!-- <div class="d-flex c-red">
@@ -36,18 +36,12 @@ export default {
   props: {
     answers: {
       type: Array,
-      default: () => [
-        { id: "a", content: "1" },
-        { id: "b", content: "2" },
-      ],
+      default: () => [],
     },
     correctAnswer: {
       type: String,
-      default: "a",
+      default: "",
     },
-  },
-  mounted() {
-    console.log("answers", this.answers);
   },
   methods: {
     onCheck(answer) {

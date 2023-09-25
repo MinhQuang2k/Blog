@@ -73,7 +73,7 @@
     </a-collapse>
     <div class="mt-4 d-flex justify-content-end">
       <a-pagination
-        v-model="pagination.current_page"
+        v-model="pagination.currentPage"
         :total="total"
         :page-size="limit"
         show-less-items
@@ -102,7 +102,7 @@ import ModalEdit from "./modal/modalEdit.vue";
 import ModalAddSub from "./modal/modalAddSub.vue";
 import ModalMove from "./modal/modalMove.vue";
 import { mapFields } from "vuex-map-fields";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import { TYPE_SUB } from "~/constants/category.js";
 export default {
   name: "category",

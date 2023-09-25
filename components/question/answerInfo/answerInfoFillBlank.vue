@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p v-html="convertToHTML(content)"></p>
     <h4>Đáp án</h4>
     <div
       v-for="item in correctAnswers"
@@ -8,13 +7,8 @@
       class="d-flex align-items-center"
     >
       <div>
-        <span class="mr-4"> {{ item.key }}</span
-        ><span
-          v-for="(answer, index) in item.content"
-          :key="index"
-          class="mr-2 badge bg-green"
-          >{{ answer }}</span
-        >
+        <b class="mr-4"> {{ item.key }}.</b
+        ><span class="mr-2 badge bg-green">{{ item.content }}</span>
       </div>
     </div>
   </div>
@@ -28,15 +22,11 @@ export default {
   props: {
     content: {
       type: String,
-      default:
-        "Công cha như núi thái [%1%]<br />[%2%] như nước trong nguồn chảy ra",
+      default: "",
     },
     correctAnswers: {
       type: Array,
-      default: () => [
-        { key: 1, content: ["son", "ok"] },
-        { key: 2, content: ["Nghia me"] },
-      ],
+      default: () => [],
     },
   },
 };
