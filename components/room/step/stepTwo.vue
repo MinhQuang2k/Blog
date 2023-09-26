@@ -3,38 +3,30 @@
     <div class="box-white d-flex justify-content-between">
       <h4>Cài đặt đợt thi</h4>
       <div>
-        <a-button class="mr-3">Quay lại</a-button>
-        <a-button type="primary">Tạo mới</a-button>
+        <a-button class="mr-3" @click="onBack">Quay lại</a-button>
+        <a-button type="primary" @click.stop="onAdd">Tạo mới</a-button>
       </div>
     </div>
     <div class="d-flex box-white">
       <div class="df-1 pr-4 border-right">
         <div class="mb-4">
-          <h4>Điểm</h4>
-          <a-input />
+          <h4>Tên đợt thi</h4>
+          <div class="c-form-item">
+            <span
+              class="c-tooltip-error"
+              :class="{ 'is-show': this.$v.name.$dirty && this.$v.name.$error }"
+              >Trường thông tin không được để trống
+            </span>
+            <a-input class="wr-100" v-model="name" />
+          </div>
         </div>
         <div class="mb-4">
-          <h4>Nhóm câu hỏi</h4>
-          <a-select
-            show-search
-            placeholder="Select a person"
-            option-filter-prop="children"
-            class="wr-100"
-            :filter-option="filterOption"
-            @change="handleChange"
-          >
-            <a-select-option value="jack"> Jack </a-select-option>
-            <a-select-option value="lucy"> Lucy </a-select-option>
-            <a-select-option value="tom"> Tom </a-select-option>
-          </a-select>
-        </div>
-        <div class="mb-4">
-          <h4>Thời gian làm bài</h4>
-          <a-time-picker class="wr-100" @change="onChange" />
+          <h4>Mô tả đợt thi</h4>
+          <div class="c-form-item"><a-textarea v-model="note" :rows="6" /></div>
         </div>
         <div class="mb-4">
           <h4>Mốc đạt(%)</h4>
-          <a-input-number class="wr-100" />
+          <a-input-number class="wr-100" v-model="passMark" />
         </div>
         <div class="mb-4">
           <h4>Truy cập đợt thi có hiệu lực</h4>
@@ -43,39 +35,12 @@
             lực không giới hạn
           </h5>
           <a-range-picker
-            :disabled-date="disabledDate"
-            :disabled-time="disabledRangeTime"
             :show-time="{
               hideDisabledOptions: true,
             }"
-            format="YYYY-MM-DD HH:mm:ss"
+            v-model="attemptLimit"
+            :format="DATE_TIME"
           />
-        </div>
-
-        <div class="mb-4">
-          <h4>Yêu cầu thông tin</h4>
-          <a-checkbox-group @change="onChange">
-            <a-row>
-              <a-col :span="8">
-                <a-checkbox value="A"> Số điện thoại </a-checkbox>
-              </a-col>
-              <a-col :span="8">
-                <a-checkbox value="B"> Họ và tên</a-checkbox>
-              </a-col>
-              <a-col :span="8">
-                <a-checkbox value="C"> Nhóm</a-checkbox>
-              </a-col>
-              <a-col :span="8">
-                <a-checkbox value="D"> Email </a-checkbox>
-              </a-col>
-              <a-col :span="8">
-                <a-checkbox value="E"> Mã định danh </a-checkbox>
-              </a-col>
-              <a-col :span="8">
-                <a-checkbox value="H"> Vị trí công việc </a-checkbox>
-              </a-col>
-            </a-row>
-          </a-checkbox-group>
         </div>
       </div>
       <div class="df-1 pl-4">
@@ -120,6 +85,31 @@
             </a-col>
           </a-row>
         </div>
+        <div class="mb-4">
+          <h4>Yêu cầu thông tin</h4>
+          <a-checkbox-group @change="onChange">
+            <a-row>
+              <a-col :span="8">
+                <a-checkbox value="A"> Số điện thoại </a-checkbox>
+              </a-col>
+              <a-col :span="8">
+                <a-checkbox value="B"> Họ và tên</a-checkbox>
+              </a-col>
+              <a-col :span="8">
+                <a-checkbox value="C"> Nhóm</a-checkbox>
+              </a-col>
+              <a-col :span="8">
+                <a-checkbox value="D"> Email </a-checkbox>
+              </a-col>
+              <a-col :span="8">
+                <a-checkbox value="E"> Mã định danh </a-checkbox>
+              </a-col>
+              <a-col :span="8">
+                <a-checkbox value="H"> Vị trí công việc </a-checkbox>
+              </a-col>
+            </a-row>
+          </a-checkbox-group>
+        </div>
       </div>
     </div>
     <a-modal
@@ -140,16 +130,67 @@
 </template>
 
 <script>
+import { mapFields } from "vuex-map-fields";
+import generate from "@/mixins/generate";
+import { required } from "vuelidate/lib/validators";
+import { DATE_TIME } from "@/constants/common";
 export default {
-  name: "roomsCreate1",
-
+  name: "stepTwo",
+  mixins: [generate],
   data() {
     return {
-      current: 2,
+      DATE_TIME,
       visible: false,
+      attemptLimit: [],
     };
   },
+  validations() {
+    return {
+      name: {
+        required,
+      },
+    };
+  },
+  computed: {
+    ...mapFields("roomSetting", {
+      step: "step",
+      tabs: "setting.tabs",
+      name: "setting.name",
+      note: "setting.note",
+      testId: "setting.testId",
+      tabId: "setting.tabId",
+      startAt: "setting.startAt",
+      endAt: "setting.endAt",
+      typeCode: "setting.typeCode",
+      accessCodes: "setting.accessCodes",
+      requires: "setting.requires",
+      isActive: "setting.isActive",
+      passMark: "setting.passMark",
+      scoreShown: "setting.scoreShown",
+      resultShown: "setting.resultShown",
+    }),
+  },
+  watch: {
+    attemptLimit(value) {
+      this.startAt = this.$dayjs(value[0]).format(DATE_TIME);
+      this.endAt = this.$dayjs(value[1]).format(DATE_TIME);
+    },
+  },
+  mounted() {
+    if (this.startAt && this.endAt) {
+      this.attemptLimit = [this.$dayjs(this.startAt), this.$dayjs(this.endAt)];
+    } else {
+      this.attemptLimit = [];
+    }
+  },
   methods: {
+    onAdd() {
+      this.$v.$touch();
+      if (this.$v.name.$invalid) return;
+    },
+    onBack() {
+      this.step = 0;
+    },
     onChange(checked) {
       console.log(`a-switch to ${checked}`);
     },
@@ -161,24 +202,6 @@ export default {
     },
     closeModal() {
       this.visible = false;
-    },
-    disabledDate(current) {
-      // Can not select days before today and today
-      return current && current < moment().endOf("day");
-    },
-    disabledRangeTime(_, type) {
-      if (type === "start") {
-        return {
-          disabledHours: () => this.range(0, 60).splice(4, 20),
-          disabledMinutes: () => this.range(30, 60),
-          disabledSeconds: () => [55, 56],
-        };
-      }
-      return {
-        disabledHours: () => this.range(0, 60).splice(20, 4),
-        disabledMinutes: () => this.range(0, 31),
-        disabledSeconds: () => [55, 56],
-      };
     },
   },
 };

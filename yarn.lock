@@ -1719,7 +1719,7 @@
 
 "@nuxtjs/dayjs@^1.4.1":
   version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/dayjs/-/dayjs-1.4.1.tgz#a1ff4dba8b9f9f423577264783f50a5492af1cae"
+  resolved "https://registry.npmjs.org/@nuxtjs/dayjs/-/dayjs-1.4.1.tgz"
   integrity sha512-FgZoFqXxwRPoNJwcN3Up8jvxKnwalIZJF4rX5MWmMpJej75Rl/ShPKkkNxgf3x3gUopOyRjTCLRq/LAVFwY0Pg==
   dependencies:
     consola "^2.10.1"
@@ -1779,7 +1779,7 @@
 
 "@tinymce/tinymce-vue@3.2.8":
   version "3.2.8"
-  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-vue/-/tinymce-vue-3.2.8.tgz#014571b52ec8fa83665a7fa887bf65140207de71"
+  resolved "https://registry.npmjs.org/@tinymce/tinymce-vue/-/tinymce-vue-3.2.8.tgz"
   integrity sha512-jEz+NZ0g+FZFz273OEUWz9QkwPMyjc5AJYyxOgu51O1Y5UaJ/6IUddXTX6A20mwCleEv5ebwNYdalviafx4fnA==
 
 "@trysound/sax@0.2.0":
@@ -1959,7 +1959,7 @@
 
 "@vue/devtools-api@^6.5.0":
   version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.5.0.tgz#98b99425edee70b4c992692628fa1ea2c1e57d07"
+  resolved "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.5.0.tgz"
   integrity sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==
 
 "@webassemblyjs/ast@1.9.0":
@@ -3538,7 +3538,7 @@ cyclist@^1.0.1:
 
 dayjs@^1.10.4:
   version "1.11.9"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
+  resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.9.tgz"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
 
 de-indent@^1.0.2:
@@ -5346,7 +5346,7 @@ launch-editor@^2.6.0:
 
 leader-line-vue@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/leader-line-vue/-/leader-line-vue-2.1.1.tgz#738ff22bd80a62a694840fd7358f936ceb3ad898"
+  resolved "https://registry.npmjs.org/leader-line-vue/-/leader-line-vue-2.1.1.tgz"
   integrity sha512-ZfNoDcwgfHESNLErfPBdJ4I/1tbXLBUFwGfbqAZvTcOghcm7UtUm7mUPZVAOThlO3q75n8pZmDTGtM/Gwfx+xA==
 
 lilconfig@^2.0.3, lilconfig@^2.1.0:
@@ -5819,9 +5819,9 @@ mute-stream@0.0.8:
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
 nan@^2.12.1:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.17.0.tgz#c0150a2368a182f033e9aa5195ec76ea41a199cb"
-  integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.18.0.tgz#26a6faae7ffbeb293a39660e88a76b82e30b7554"
+  integrity sha512-W7tfG7vMOGtD30sHoZSSc/JVYiyDPEyQVso/Zz+/uQd0B0L46gtC+pHha5FFMRpil6fm/AoEcRWyOVi4+E/f8w==
 
 nanoid@^3.1.23, nanoid@^3.3.6:
   version "3.3.6"
@@ -8428,9 +8428,9 @@ type-fest@^0.8.0:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.8.1.tgz"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-type-fest@^4.2.0:
+type-fest@^4.3.1:
   version "4.3.1"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.3.1.tgz#5cb58cdab5120f7ab0b40cfdc35073fb9adb651d"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.3.1.tgz"
   integrity sha512-pphNW/msgOUSkJbH58x8sqpq8uQj6b0ZKGxEsLKMUnGorRcDjrUaLS+39+/ub41JNTwrrMyJcUB8+YZs3mbwqw==
 
 type-is@~1.6.18:
@@ -8695,12 +8695,12 @@ vary@^1.1.2, vary@~1.1.2:
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
 vee-validate@^4.11.6:
-  version "4.11.6"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.11.6.tgz#4494a6898d25f93369bfbd93895958915c4f5bc3"
-  integrity sha512-DwmNRqYVwX/CrH2ai8RRE1Y0ETmMFkS6X+8JxzC9rmE5cMqBxMiHRiqRABRvtJAbgHFG7LeSzVkPcr/mG5BiSQ==
+  version "4.11.7"
+  resolved "https://registry.npmjs.org/vee-validate/-/vee-validate-4.11.7.tgz"
+  integrity sha512-HWnZgOY02mPuAQheaVcKZwahC879YsGNRW4/kkjxeOJ3wu1oruEeomuk+ovCyxTPQoAl1WPHurVJKL1yPGd/WQ==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
-    type-fest "^4.2.0"
+    type-fest "^4.3.1"
 
 vm-browserify@^1.0.1:
   version "1.1.2"
@@ -8795,7 +8795,7 @@ vue@^2.7.10:
 
 vuelidate@0.7.7:
   version "0.7.7"
-  resolved "https://registry.yarnpkg.com/vuelidate/-/vuelidate-0.7.7.tgz#5df3930a63ddecf56fde7bdacea9dbaf0c9bf899"
+  resolved "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz"
   integrity sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA==
 
 vuex-map-fields@^1.4.1:

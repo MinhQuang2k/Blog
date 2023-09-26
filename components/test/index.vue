@@ -194,7 +194,7 @@ export default {
     },
     async getList(data = {}) {
       const params = {
-        content: this.keyword.trim(),
+        name: this.keyword.trim(),
         page: 1,
         limit: this.limit,
         sort_by: this.sortBy,

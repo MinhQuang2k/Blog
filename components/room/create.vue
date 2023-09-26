@@ -18,24 +18,40 @@
         description="Tên đợt thi, mã truy cập, thời gian"
       />
     </a-steps>
-    <StepOne v-if="step === 0" />
-    <StepTwo v-else />
+    <keep-alive>
+      <component v-bind:is="currentStep" />
+    </keep-alive>
   </div>
 </template>
 
 <script>
 import StepOne from "./step/stepOne.vue";
 import StepTwo from "./step/stepTwo.vue";
+import { mapFields } from "vuex-map-fields";
+
 export default {
   components: { StepOne, StepTwo },
-  data() {
-    return {
-      step: 0,
-    };
+  computed: {
+    ...mapFields("roomSetting", {
+      testId: "setting.testId",
+      step: "step",
+    }),
+    currentStep() {
+      if (this.step) {
+        return "StepTwo";
+      }
+      return "StepOne";
+    },
   },
   methods: {
     changeStep(value) {
-      this.step = value;
+      if (this.testId) {
+        this.step = value;
+      } else {
+        this.$notification["error"]({
+          message: "Vui lòng chọn đề thi",
+        });
+      }
     },
   },
 };
