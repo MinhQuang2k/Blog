@@ -37,16 +37,16 @@ export const REQUIRE = {
 
 export const SCORE_SHOWN = {
   IS_SCORE_SHOWN: 1,
-  IS_DETAIL_RESULT_SHOWN: 2,
+  IS_PERCENT_SHOWN: 2,
 };
 
 export const RESULT_SHOWN = {
-  IS_PERCENT_SHOWN: 1,
+  IS_DETAIL_RESULT_SHOWN: 1,
   IS_PASSED_RESULT_SHOWN: 2,
 };
 
 export const TYPE_CODE = {
   NO_CODE: 0,
   ONE_CODE: 1,
-  MANY_CODE: 2,
+  LIST_CODE: 2,
 };

@@ -38,7 +38,7 @@
             :show-time="{
               hideDisabledOptions: true,
             }"
-            v-model="attemptLimit"
+            v-model="period"
             :format="DATE_TIME"
           />
         </div>
@@ -46,42 +46,64 @@
       <div class="df-1 pl-4">
         <div class="mb-4">
           <h4>Mã truy cập đợt thi</h4>
-          <!-- <div class="pa-4">
-              <a-radio-group class="mb-4" v-model="value" @change="onChange">
-                <a-radio :value="1"> Một mã </a-radio>
-                <a-radio :value="2"> Danh sách mã </a-radio>
-                <a-radio :value="3"> Không có </a-radio>
-              </a-radio-group>
-              <h5>Nhập mã duy nhất dùng chung cho tất cả các ứng viên truy cập vào</h5>
-              <a-input placeholder="Nhập mã" />
-            </div> -->
-          <!-- <div class="pa-4">
-              <h5>Ai cũng có quyền truy cập vào link và thực hiện thi tuyển</h5>
-            </div> -->
-          <div>
+          <a-radio-group class="mb-4" v-model="typeCode">
+            <a-radio :value="TYPE_CODE.ONE_CODE"> Một mã </a-radio>
+            <a-radio :value="TYPE_CODE.LIST_CODE"> Danh sách mã </a-radio>
+            <a-radio :value="TYPE_CODE.NO_CODE"> Không có </a-radio>
+          </a-radio-group>
+          <template v-if="typeCode === TYPE_CODE.ONE_CODE">
+            <h5>
+              Nhập mã duy nhất dùng chung cho tất cả các ứng viên truy cập vào
+            </h5>
+            <a-input placeholder="Nhập mã" />
+          </template>
+          <template v-else-if="typeCode === TYPE_CODE.LIST_CODE">
             <h5>
               Mỗi ứng viên sẽ dùng một mã trong danh sách bạn tạo để truy cập
               vào link thi tuyển
             </h5>
             <a-button type="primary" @click="openModal">Tạo mã</a-button>
             <h4 class="mt-4">Số lần làm bài/mã</h4>
-            <a-input-number class="wr-100" />
-          </div>
+            <a-input-number v-model="limitCode" class="wr-100" />
+          </template>
+          <h5 v-else>
+            Ai cũng có quyền truy cập vào link và thực hiện thi tuyển
+          </h5>
         </div>
         <div class="mb-4">
           <h4>Kết quả test</h4>
           <a-row>
             <a-col :span="8">Điểm:</a-col>
             <a-col :span="16">
-              <div><a-checkbox>Điểm</a-checkbox></div>
-              <div><a-checkbox>Phần trăm hoàn thành</a-checkbox></div>
+              <a-checkbox-group v-model="scoreShown">
+                <div>
+                  <a-checkbox :value="SCORE_SHOWN.IS_SCORE_SHOWN"
+                    >Điểm</a-checkbox
+                  >
+                </div>
+                <div>
+                  <a-checkbox :value="SCORE_SHOWN.IS_PERCENT_SHOWN"
+                    >Phần trăm hoàn thành</a-checkbox
+                  >
+                </div>
+              </a-checkbox-group>
             </a-col>
           </a-row>
           <a-row>
             <a-col :span="8">Kết quả:</a-col>
             <a-col :span="16">
-              <div><a-checkbox>Chi tiết</a-checkbox></div>
-              <div><a-checkbox>Đạt/trượt</a-checkbox></div>
+              <a-checkbox-group v-model="resultShown">
+                <div>
+                  <a-checkbox :value="RESULT_SHOWN.IS_DETAIL_RESULT_SHOWN"
+                    >Chi tiết</a-checkbox
+                  >
+                </div>
+                <div>
+                  <a-checkbox :value="RESULT_SHOWN.IS_PASSED_RESULT_SHOWN"
+                    >Đạt/trượt</a-checkbox
+                  >
+                </div>
+              </a-checkbox-group>
             </a-col>
           </a-row>
         </div>
@@ -90,42 +112,39 @@
           <a-checkbox-group @change="onChange">
             <a-row>
               <a-col :span="8">
-                <a-checkbox value="A"> Số điện thoại </a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_PHONE">
+                  Số điện thoại
+                </a-checkbox>
               </a-col>
               <a-col :span="8">
-                <a-checkbox value="B"> Họ và tên</a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_FULLNAME">
+                  Họ và tên</a-checkbox
+                >
               </a-col>
               <a-col :span="8">
-                <a-checkbox value="C"> Nhóm</a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_GROUP"> Nhóm</a-checkbox>
               </a-col>
               <a-col :span="8">
-                <a-checkbox value="D"> Email </a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_EMAIL">
+                  Email
+                </a-checkbox>
               </a-col>
               <a-col :span="8">
-                <a-checkbox value="E"> Mã định danh </a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_IDENTIFY_CODE">
+                  Mã định danh
+                </a-checkbox>
               </a-col>
               <a-col :span="8">
-                <a-checkbox value="H"> Vị trí công việc </a-checkbox>
+                <a-checkbox :value="REQUIRE.IS_REQUIRE_POSITION">
+                  Vị trí công việc
+                </a-checkbox>
               </a-col>
             </a-row>
           </a-checkbox-group>
         </div>
       </div>
     </div>
-    <a-modal
-      title="Tạo danh sách mã"
-      :visible="visible"
-      @ok="closeModal"
-      @cancel="closeModal"
-      cancelText="Hủy"
-      okText="Lưu"
-    >
-      <div class="d-flex justify-content-between mb-4">
-        <h4>Nhập tên nhóm</h4>
-        <a-button type="primary">Tạo mã tự động</a-button>
-      </div>
-      <a-textarea :rows="6" />
-    </a-modal>
+    <ModalAdd :isShow.sync="isShowModal" :limitCode="limitCode" />
   </div>
 </template>
 
@@ -134,14 +153,29 @@ import { mapFields } from "vuex-map-fields";
 import generate from "@/mixins/generate";
 import { required } from "vuelidate/lib/validators";
 import { DATE_TIME } from "@/constants/common";
+import {
+  SCORE_SHOWN,
+  REQUIRE,
+  RESULT_SHOWN,
+  TYPE_CODE,
+} from "@/constants/exam";
+import ModalAdd from "../modal/modalAdd.vue";
 export default {
   name: "stepTwo",
   mixins: [generate],
+  components: {
+    ModalAdd: ModalAdd,
+  },
   data() {
     return {
       DATE_TIME,
-      visible: false,
-      attemptLimit: [],
+      SCORE_SHOWN,
+      REQUIRE,
+      RESULT_SHOWN,
+      TYPE_CODE,
+      isShowModal: false,
+      period: [],
+      limitCode: null,
     };
   },
   validations() {
@@ -163,6 +197,7 @@ export default {
       endAt: "setting.endAt",
       typeCode: "setting.typeCode",
       accessCodes: "setting.accessCodes",
+      attemptLimit: "setting.attemptLimit",
       requires: "setting.requires",
       isActive: "setting.isActive",
       passMark: "setting.passMark",
@@ -171,17 +206,20 @@ export default {
     }),
   },
   watch: {
-    attemptLimit(value) {
-      this.startAt = this.$dayjs(value[0]).format(DATE_TIME);
-      this.endAt = this.$dayjs(value[1]).format(DATE_TIME);
+    period(value) {
+      if (value && value.length) {
+        this.startAt = this.$dayjs(value[0]).format(DATE_TIME);
+        this.endAt = this.$dayjs(value[1]).format(DATE_TIME);
+      }
     },
   },
   mounted() {
     if (this.startAt && this.endAt) {
-      this.attemptLimit = [this.$dayjs(this.startAt), this.$dayjs(this.endAt)];
+      this.period = [this.$dayjs(this.startAt), this.$dayjs(this.endAt)];
     } else {
-      this.attemptLimit = [];
+      this.period = [];
     }
+    this.limitCode = this.accessCodes.length || null;
   },
   methods: {
     onAdd() {
@@ -191,17 +229,14 @@ export default {
     onBack() {
       this.step = 0;
     },
+    openModal() {
+      this.isShowModal = true;
+    },
     onChange(checked) {
       console.log(`a-switch to ${checked}`);
     },
     handleChange(value) {
       console.log(`selected ${value}`);
-    },
-    openModal() {
-      this.visible = true;
-    },
-    closeModal() {
-      this.visible = false;
     },
   },
 };

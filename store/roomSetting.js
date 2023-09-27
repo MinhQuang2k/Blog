@@ -20,6 +20,7 @@ export const state = () => ({
     startAt: null,
     endAt: null,
     typeCode: 0,
+    attemptLimit: 0,
     accessCodes: [],
     requires: [],
     isActive: true,
@@ -29,12 +30,48 @@ export const state = () => ({
   },
 });
 
+const getConvertParam = (state) => {
+  return {
+    name: state.name,
+    note: state.note,
+    exam_id: state.testId,
+    start_at: state.startAt,
+    end_at: state.endAt,
+    type_code: state.typeCode,
+    attempt_limit: state.attemptLimit,
+    access_codes: state.accessCodes,
+    requires: state.requires,
+    is_active: state.isActive,
+    pass_mark: state.passMark,
+    score_shown: state.scoreShown,
+    result_shown: state.resultShown,
+  };
+};
+
+const getFormatParam = (data) => {
+  return {
+    name: data.name,
+    note: data.note,
+    testId: data.exam_id,
+    startAt: data.start_at,
+    endAt: data.end_at,
+    typeCode: data.type_code,
+    attemptLimit: data.attempt_limit,
+    accessCodes: data.access_codes,
+    requires: data.requires,
+    isActive: data.is_active,
+    passMark: data.pass_mark,
+    scoreShown: data.score_shown,
+    resultShown: data.result_shown,
+  };
+};
+
 export const actions = {
   getPaging({}, params) {
     return this.$axios.get(`/api/rooms`, { params });
   },
   create({}, params) {
-    return this.$axios.post("/api/rooms", params);
+    return this.$axios.post("/api/rooms", getConvertParam(params));
   },
   update({}, params) {
     const { id, payload } = params;
@@ -43,6 +80,9 @@ export const actions = {
   delete({}, params) {
     const id = params.id;
     return this.$axios.delete(`/api/rooms/${id}`);
+  },
+  getCodeRoom({}, params) {
+    return this.$axios.get(`/api/rooms/code`, { params });
   },
   async getCategory({ commit }) {
     const response = await this.$axios.get("/api/categories/all");
