@@ -84,6 +84,7 @@ export default {
       list: "test.list",
       categories: "categories",
       testId: "setting.testId",
+      testName: "setting.testName",
       keyword: "test.keyword",
       subId: "test.subId",
       currentPage: "test.pagination.currentPage",
@@ -120,6 +121,7 @@ export default {
     },
     onChooseTest(value) {
       this.testId = value;
+      this.testName = this.list.find((item) => item.id === value)?.name;
     },
     onNext() {
       if (this.testId) {

@@ -2,7 +2,7 @@ import { getField, updateField } from "vuex-map-fields";
 
 export const state = () => ({
   categories: [],
-  step: 1,
+  step: 0,
   test: {
     list: [],
     pagination: {
@@ -17,6 +17,7 @@ export const state = () => ({
     name: "",
     note: "",
     testId: null,
+    testName: "",
     startAt: null,
     endAt: null,
     typeCode: 0,
@@ -32,19 +33,19 @@ export const state = () => ({
 
 const getConvertParam = (state) => {
   return {
-    name: state.name,
-    note: state.note,
-    exam_id: state.testId,
-    start_at: state.startAt,
-    end_at: state.endAt,
-    type_code: state.typeCode,
-    attempt_limit: state.attemptLimit,
-    access_codes: state.accessCodes,
-    requires: state.requires,
-    is_active: state.isActive,
-    pass_mark: state.passMark,
-    score_shown: state.scoreShown,
-    result_shown: state.resultShown,
+    name: state.setting.name,
+    note: state.setting.note,
+    exam_id: state.setting.testId,
+    start_at: state.setting.startAt,
+    end_at: state.setting.endAt,
+    type_code: state.setting.typeCode,
+    attempt_limit: state.setting.attemptLimit,
+    access_codes: state.setting.accessCodes,
+    requires: state.setting.requires,
+    is_active: state.setting.isActive,
+    pass_mark: state.setting.passMark,
+    score_shown: state.setting.scoreShown,
+    result_shown: state.setting.resultShown,
   };
 };
 
@@ -70,8 +71,8 @@ export const actions = {
   getPaging({}, params) {
     return this.$axios.get(`/api/rooms`, { params });
   },
-  create({}, params) {
-    return this.$axios.post("/api/rooms", getConvertParam(params));
+  create({ state }) {
+    return this.$axios.post("/api/rooms", getConvertParam(state));
   },
   update({}, params) {
     const { id, payload } = params;

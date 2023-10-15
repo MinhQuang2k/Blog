@@ -10,6 +10,9 @@
     <div class="d-flex box-white">
       <div class="df-1 pr-4 border-right">
         <div class="mb-4">
+          <h4>Đề thi: {{ testName }}</h4>
+        </div>
+        <div class="mb-4">
           <h4>Tên đợt thi</h4>
           <div class="c-form-item">
             <span
@@ -109,7 +112,7 @@
         </div>
         <div class="mb-4">
           <h4>Yêu cầu thông tin</h4>
-          <a-checkbox-group @change="onChange">
+          <a-checkbox-group v-model="requires">
             <a-row>
               <a-col :span="8">
                 <a-checkbox :value="REQUIRE.IS_REQUIRE_PHONE">
@@ -153,6 +156,7 @@ import { mapFields } from "vuex-map-fields";
 import generate from "@/mixins/generate";
 import { required } from "vuelidate/lib/validators";
 import { DATE_TIME } from "@/constants/common";
+import { mapActions } from "vuex";
 import {
   SCORE_SHOWN,
   REQUIRE,
@@ -192,6 +196,7 @@ export default {
       name: "setting.name",
       note: "setting.note",
       testId: "setting.testId",
+      testName: "setting.testName",
       tabId: "setting.tabId",
       startAt: "setting.startAt",
       endAt: "setting.endAt",
@@ -222,21 +227,30 @@ export default {
     this.limitCode = this.accessCodes.length || null;
   },
   methods: {
-    onAdd() {
+    ...mapActions("roomSetting", ["create"]),
+    async onAdd() {
       this.$v.$touch();
       if (this.$v.name.$invalid) return;
+      const response = await this.create();
+
+      if (response?.data?.code === "SUCCESS") {
+        this.$notification["success"]({
+          message: "Thêm thành công",
+        });
+        this.$router.push({
+          path: "/rooms",
+        });
+      } else {
+        this.$notification["error"]({
+          message: "Lôĩ khi tạo",
+        });
+      }
     },
     onBack() {
       this.step = 0;
     },
     openModal() {
       this.isShowModal = true;
-    },
-    onChange(checked) {
-      console.log(`a-switch to ${checked}`);
-    },
-    handleChange(value) {
-      console.log(`selected ${value}`);
     },
   },
 };
