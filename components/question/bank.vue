@@ -257,12 +257,12 @@ export default {
     },
     onAddQuestion() {
       this.$router.push({
-        path: "/questions/create",
+        path: "/questions/create/",
       });
     },
     onEdit(questionID) {
       this.$router.push({
-        path: `/questions/${questionID}/edit`,
+        path: `/questions/${questionID}/edit/`,
       });
     },
     async onClone(questionID) {

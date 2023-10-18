@@ -1,24 +1,5 @@
 <template>
   <div>
-    <div class="c-form-item">
-      <span
-        class="c-tooltip-error"
-        :class="{ 'is-show': this.$v.note.$dirty && this.$v.note.$error }"
-        >Trường thông tin không được để trống
-      </span>
-      <a-input
-        :class="{
-          'is-error': this.$v.note.$dirty && this.$v.note.$error,
-        }"
-        v-model="note"
-      />
-    </div>
-    <Question />
-
-    <a-button @click="onSubmit">onSubmit</a-button>
-    <a-button @click="onReset">onReset</a-button>
-    <a-button @click="copyText">copyText</a-button>
-
     <!-- <div class="d-flex justify-content-between w-200">
       <div>
         <div ref="start_1" class="dot_green my-5">1</div>
@@ -69,14 +50,10 @@
 </template>
 
 <script>
-import TinyMCE from "@/components/global/TinyMCE";
-import Question from "@/components/question/question/question";
-import { required } from "vuelidate/lib/validators";
-import { mapFields } from "vuex-map-fields";
 // import LeaderLine from "leader-line-vue";
 export default {
   name: "dashboard",
-  components: [TinyMCE, Question],
+  auth: true,
   data() {
     return {
       current: 2,
@@ -89,21 +66,6 @@ export default {
       lines: {},
     };
   },
-  computed: {
-    ...mapFields("question", {
-      content: "content",
-    }),
-  },
-  validations() {
-    return {
-      note: {
-        required,
-      },
-      content: {
-        required,
-      },
-    };
-  },
   // mounted() {
   //   this.lines["A_1"] = LeaderLine.setLine(
   //     this.$refs.start_1,
@@ -112,10 +74,6 @@ export default {
   //   );
   // },
   methods: {
-    onChange(val, id) {
-      console.log("onChange", val, id);
-      this.content = val;
-    },
     onHide() {
       for (var i = 1; i <= 4; i++) {
         for (var char of ["A", "B", "C", "D"]) {
@@ -129,14 +87,6 @@ export default {
           this.lines[char + "_" + i].show();
         }
       }
-    },
-    onSubmit() {
-      this.$v.$touch();
-      console.log("this.$vcontent", this.$v.content);
-      console.log("this.$note", this.$v.note);
-    },
-    onReset() {
-      this.$v.content.$reset();
     },
   },
 };

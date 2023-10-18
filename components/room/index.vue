@@ -107,7 +107,7 @@ export default {
   methods: {
     ...mapActions("room", ["getPaging", "setPagination"]),
     onAddRoom() {
-      this.$router.push({ path: "/rooms/create" });
+      this.$router.push({ path: "/rooms/create/" });
     },
     async onSearch() {
       await this.getList();
@@ -166,12 +166,6 @@ export default {
           message: "Lôĩ khi cập nhật",
         });
       }
-    },
-    onChange(checked) {
-      console.log(`a-switch to ${checked}`);
-    },
-    handleChange(value) {
-      console.log(`selected ${value}`);
     },
   },
 };

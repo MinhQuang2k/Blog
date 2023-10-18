@@ -133,7 +133,7 @@ export default {
       }
     },
     onBack() {
-      this.$router.push({ path: "/rooms" });
+      this.$router.push({ path: "/rooms/" });
     },
   },
 };

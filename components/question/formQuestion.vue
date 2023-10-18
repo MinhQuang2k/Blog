@@ -219,7 +219,7 @@ export default {
         this.$notification["success"]({
           message: "Tạo thành công",
         });
-        this.$router.push({ path: `/tests/${this.testId}/edit` });
+        this.$router.push({ path: `/tests/${this.testId}/edit/` });
       } else {
         this.$notification["error"]({
           message: "Lôĩ khi tạo",

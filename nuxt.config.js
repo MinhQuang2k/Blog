@@ -57,55 +57,54 @@ export default {
     },
   },
 
-  // auth: {
-  //   // Options
-  //   redirect: {
-  //     login: "/login/",
-  //     logout: "/login/",
-  //     callback: "/",
-  //     home: "/",
-  //   },
-  //   strategies: {
-  //     local: {
-  //       endpoints: {
-  //         login: {
-  //           url: "/auth/login",
-  //           method: "post",
-  //         },
-  //         user: {
-  //           url: "/auth/me",
-  //           method: "get",
-  //         },
-  //         logout: false,
-  //       },
-  //       token: {
-  //         property: "access_token",
-  //         global: true,
-  //       },
-  //       user: {
-  //         property: false,
-  //       },
-  //     },
-  //   },
-  // },
+  auth: {
+    // Options
+    redirect: {
+      login: "/login/",
+      callback: "/",
+      home: "/",
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: "/auth/login",
+            method: "post",
+          },
+          user: {
+            url: "/auth/me",
+            method: "get",
+          },
+          logout: false,
+        },
+        token: {
+          property: "access_token",
+          global: true,
+        },
+        user: {
+          property: false,
+        },
+      },
+    },
+  },
 
-  // router: {
-  //   middleware: ["authenticated", "auth"],
-  //   // trailingSlash: true,
-  // },
+  router: {
+    middleware: ["authenticated", "auth"],
+    trailingSlash: true,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  // loaders: {
-  //   cssModules: {
-  //     camelCase: true,
-  //     localIdentName: "[local]_[hash:base64:5]",
-  //   },
-  // },
+  loaders: {
+    cssModules: {
+      camelCase: true,
+      localIdentName: "[local]_[hash:base64:5]",
+    },
+  },
 
-  // vue: {
-  //   config: {
-  //     productionTip: false,
-  //     devtools: false,
-  //   },
-  // },
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: false,
+    },
+  },
 };

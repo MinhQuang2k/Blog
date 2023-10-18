@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       selectedKeys: [],
-      collapsed: false,
       sidebar: [
         {
           key: 1,
@@ -53,13 +52,13 @@ export default {
             {
               key: 21,
               name: "Nhóm đề thi",
-              link: "/categories",
+              link: "/categories/",
               icon: "",
             },
             {
               key: 22,
               name: "Nhóm câu hỏi",
-              link: "/question-tags",
+              link: "/question-tags/",
               icon: "",
             },
           ],
@@ -67,14 +66,14 @@ export default {
         {
           key: 3,
           name: "Đề thi",
-          link: "/tests",
+          link: "/tests/",
           icon: "",
           sub: [],
         },
         {
           key: 4,
           name: "Đợt thi tuyển",
-          link: "/rooms",
+          link: "/rooms/",
           icon: "",
           sub: [],
         },
@@ -87,19 +86,19 @@ export default {
             {
               key: 51,
               name: "Ngân hàng của tôi",
-              link: "/questions/bank",
+              link: "/questions/bank/",
               icon: "",
             },
             {
               key: 52,
               name: "Ngân hàng đề thi",
-              link: "/sample-tests",
+              link: "/sample-tests/",
               icon: "",
             },
             {
               key: 53,
               name: "Ngân hàng câu hỏi",
-              link: "/sample-questions",
+              link: "/sample-questions/",
               icon: "",
             },
           ],
@@ -107,7 +106,7 @@ export default {
         {
           key: 6,
           name: "Thống kê",
-          link: "/campaigns",
+          link: "/campaigns/",
           icon: "",
           sub: [],
         },

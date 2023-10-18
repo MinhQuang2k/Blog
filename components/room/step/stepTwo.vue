@@ -238,7 +238,7 @@ export default {
           message: "Thêm thành công",
         });
         this.$router.push({
-          path: "/rooms",
+          path: "/rooms/",
         });
       } else {
         this.$notification["error"]({

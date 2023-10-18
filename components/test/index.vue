@@ -224,13 +224,13 @@ export default {
     },
     onShowResult() {},
     onSettingRoom(roomID) {
-      this.$router.push(`rooms/${roomID}/edit`);
+      this.$router.push(`rooms/${roomID}/edit/`);
     },
     onEditTest(roomID) {
-      this.$router.push(`tests/${roomID}/edit`);
+      this.$router.push(`tests/${roomID}/edit/`);
     },
     onAddRoom() {
-      this.$router.push(`rooms/create/step-0`);
+      this.$router.push(`rooms/create/step-0/`);
     },
     async onDeleteTest(testID) {
       const response = await this.delete({

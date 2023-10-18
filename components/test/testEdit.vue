@@ -244,7 +244,7 @@ export default {
           message: "Xóa thành công",
         });
         this.$router.push({
-          path: "/tests",
+          path: "/tests/",
         });
       } else {
         this.$notification["error"]({
@@ -254,7 +254,7 @@ export default {
     },
     onAddQuestion() {
       this.$router.push({
-        path: `/questions/create?test_id=${this.id}`,
+        path: `/questions/create?test_id=${this.id}/`,
       });
     },
     onMenu(e) {
@@ -263,7 +263,7 @@ export default {
           this.onAddQuestion();
           return;
         case ADD_QUESTION.MY_BANK:
-          this.$router.push({ path: `/questions/bank?test_id=${this.id}` });
+          this.$router.push({ path: `/questions/bank?test_id=${this.id}/` });
           return;
         case ADD_QUESTION.QUESTION_BANK:
           return;
@@ -272,7 +272,7 @@ export default {
       }
     },
     onEditQuestion(questionId) {
-      this.$router.push({ path: `/questions/${questionId}/edit` });
+      this.$router.push({ path: `/questions/${questionId}/edit/` });
     },
     async onCloneQuestion(questionId) {
       const response = await this.clones({ id: questionId });
